@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "ES2020",
+        "baseUrl": ".",
+        "outDir": "./dist",
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "paths": {"*":["types/"]},
+        "resolveJsonModule": true,
+        "typeRoots": ["./node_modules/@types","./types"],
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true
+    },
+    "include": ["src/**/*"],
+}
