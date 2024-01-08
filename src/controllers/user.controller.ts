@@ -74,9 +74,6 @@ export class UserController {
           },
         });
       }
-  
-      
-
       return {
         success: "Ok",
         status: 201,
@@ -147,30 +144,40 @@ export class UserController {
     try {
       const result = await prisma.profile.findFirst({
         where: {
-          email: _body.email,
-          password: _body.password
+          email: _body.email
         },
       })
 
-      if (!result) {
+      if (result) {
+
+        const passwordSuccess = await bcrypt.compare(_body.password, result.password)
+
+        if(!passwordSuccess){
+          return {
+            status: 204,
+            msg: "User not exist",
+          };
+        }
+        
         return {
-          status: 204,
-          msg: "User not exist",
+          success: "Ok",
+          status: 200,
+          msg: "Found User",
+          data: {
+            ..._body, token: generateToken({
+              userId: result.id,
+              email: result.email,
+              password: result.password
+            })
+          },
         };
       }
 
       return {
-        success: "Ok",
-        status: 200,
-        msg: "Found User",
-        data: {
-          ..._body, token: generateToken({
-            userId: result.id,
-            email: result.email,
-            password: result.password
-          })
-        },
+        status: 204,
+        msg: "User not exist",
       };
+
     } catch (error:any) {
       return {
         status: 400,
