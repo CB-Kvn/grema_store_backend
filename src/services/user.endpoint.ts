@@ -40,7 +40,7 @@ export class UsersEndpoint {
       }
 
       const response: ResponseUser | undefined = await controller.createNewUser(
-        body
+        req
       );
 
       if (response!.error) return res.status(response!.status!).json(response);

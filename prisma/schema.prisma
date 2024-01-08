@@ -26,6 +26,8 @@ model Profile {
   email String
   password String
   address String
+  img_public_id String
+  img_secure_url String
   user Users @relation(fields: [userId], references: [id])
   userId Int @unique
   createAtProfile DateTime?

@@ -17,6 +17,7 @@ export const isValidated = async (
   }
   return next();
 };
+
 export const validateTokenMiddleware = async (req: Request, res: Response, next: NextFunction) => {
 
   try {

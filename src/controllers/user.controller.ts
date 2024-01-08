@@ -4,6 +4,9 @@ import bcrypt from "bcrypt"
 import { generateToken } from "../utils/tokens/generate_token";
 import { verifyToken } from "../utils/tokens/verify_token";
 import { body } from "express-validator";
+import { uploadImage } from "../utils/cloudinary";
+import fs from 'fs-extra'
+
 const prisma = new PrismaClient({});
 export class UserController {
   async getUser() {
@@ -13,38 +16,79 @@ export class UserController {
       );
     } catch (error) { }
   }
-  async createNewUser(_body: Users) {
+  async createNewUser(req:any) {
     try {
-      const hashedPassword = await bcrypt.hash(_body.password, 10);
+      const hashedPassword = await bcrypt.hash(req.body!.password, 10);
+      
+      if (req.files?.image) {
+      const result = await uploadImage(req.files.image.tempFilePath)
+        
+
       const user = await prisma.users.create({
         data: {
-          id: _body.id,
-          name: _body.name,
-          lastName: _body.lastName,
-          age: _body.age,
+          id: parseInt(req.body.id),
+          name: req.body.name,
+          lastName: req.body.lastName,
+          age: parseInt(req.body.age),
           dateOfBirth: new Date(),
           createAtUsers: new Date(),
           updateAtUsers: new Date(),
-          genre: _body.genre,
+          genre: req.body.genre,
           profile: {
             create: {
-              email: _body.email,
+              email: req.body.email,
               password: hashedPassword,
-              address: _body.address,
+              address: req.body.address,
+              img_public_id: result.public_id,
+              img_secure_url: result.secure_url,
               createAtProfile: new Date(),
               updateAtProfile: new Date(),
             },
           },
         },
       });
+        
+      await fs.unlink(req.files.image.tempFilePath)
+      }else{
+        const user = await prisma.users.create({
+          data: {
+            id: parseInt(req.body.id),
+            name: req.body.name,
+            lastName: req.body.lastName,
+            age: parseInt(req.body.age),
+            dateOfBirth: new Date(),
+            createAtUsers: new Date(),
+            updateAtUsers: new Date(),
+            genre: req.body.genre,
+            profile: {
+              create: {
+                email: req.body.email,
+                password: hashedPassword,
+                address: req.body.address,
+                img_public_id: 'NOT',
+                img_secure_url: 'NOT',
+                createAtProfile: new Date(),
+                updateAtProfile: new Date(),
+              },
+            },
+          },
+        });
+      }
+  
+      
 
       return {
         success: "Ok",
         status: 201,
         msg: "New user create in db",
-        data: { _body },
+        data: { _body:req.body },
       };
     } catch (error: any) {
+
+      if (req.files?.image) {
+        await fs.unlink(req.files.image.tempFilePath)
+      }
+      
       if (error.code === "P2002")
         return {
           status: 409,
