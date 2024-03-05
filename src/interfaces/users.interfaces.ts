@@ -4,13 +4,22 @@ export interface Users {
   lastName: string;
   age: number;
   genre: string;
-  email: string;
-  password: string;
-  address: string;
+  profile:{
+    email: string;
+    password: string;
+    address: string;
+    image: string
+  }
+  
 }
 
 export interface ProfilePassword {
   id: number;
+  email: string;
+  password: string;
+}
+
+export interface LoginProcess {
   email: string;
   password: string;
 }

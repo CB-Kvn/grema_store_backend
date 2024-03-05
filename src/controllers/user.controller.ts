@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { ProfilePassword, Users } from "../interfaces/users.interfaces";
+import { LoginProcess, ProfilePassword, Users } from "../interfaces/users.interfaces";
 import bcrypt from "bcrypt"
 import { generateToken } from "../utils/tokens/generate_token";
 import { verifyToken } from "../utils/tokens/verify_token";
@@ -15,22 +15,22 @@ export class UserController {
   }
   async createNewUser(_body: Users) {
     try {
-      const hashedPassword = await bcrypt.hash(_body.password, 10);
+      const hashedPassword = await bcrypt.hash(_body.profile.password, 10);
       const user = await prisma.users.create({
         data: {
           id: _body.id,
           name: _body.name,
           lastName: _body.lastName,
           age: _body.age,
-          dateOfBirth: new Date(),
           createAtUsers: new Date(),
           updateAtUsers: new Date(),
           genre: _body.genre,
           profile: {
             create: {
-              email: _body.email,
+              email: _body.profile.email,
               password: hashedPassword,
-              address: _body.address,
+              address: _body.profile.address,
+              image: _body.profile.image,
               createAtProfile: new Date(),
               updateAtProfile: new Date(),
             },
@@ -99,12 +99,14 @@ export class UserController {
     }
   }
 
-  async loginUser(_body: any) {
+  async loginUser(_body: LoginProcess) {
     try {
+
+      
+
       const result = await prisma.profile.findFirst({
         where: {
           email: _body.email,
-          password: _body.password
         },
       })
 
@@ -114,6 +116,10 @@ export class UserController {
           msg: "User not exist",
         };
       }
+
+      const verifiedPassword = await bcrypt.compare (_body.password,result.password)
+
+      if(!verifiedPassword) return
 
       return {
         success: "Ok",
