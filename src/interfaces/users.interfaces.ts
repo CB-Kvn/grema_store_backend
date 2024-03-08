@@ -2,7 +2,7 @@ export interface Users {
   id: number;
   name: string;
   lastName: string;
-  age: number;
+  cellphone: string;
   genre: string;
   profile:{
     email: string;
@@ -38,7 +38,7 @@ export enum KeysToValidateUserCreate {
   id = "id",
   name = "name",
   lastName = "lastName",
-  age = "age",
+  cellphone = "cellphone",
   genre = "genre",
   email = "email",
   password = "password",

@@ -14,7 +14,7 @@ model Users {
   id Int @id
   name String
   lastName String
-  age Int
+  cellphone String
   genre String
   profile Profile?
   createAtUsers DateTime?

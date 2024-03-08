@@ -21,7 +21,7 @@ export class UserController {
           id: _body.id,
           name: _body.name,
           lastName: _body.lastName,
-          age: _body.age,
+          cellphone: _body.cellphone,
           createAtUsers: new Date(),
           updateAtUsers: new Date(),
           genre: _body.genre,
@@ -113,13 +113,18 @@ export class UserController {
       if (!result) {
         return {
           status: 204,
-          msg: "User not exist",
+          msg: "User not found",
         };
       }
 
       const verifiedPassword = await bcrypt.compare (_body.password,result.password)
 
-      if(!verifiedPassword) return
+      if(!verifiedPassword) {
+        return {
+          status: 204,
+          msg: "Invalid password",
+        };
+      }
 
       return {
         success: "Ok",

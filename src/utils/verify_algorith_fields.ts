@@ -10,13 +10,13 @@ export const Verified_Fields_Algorith = (body: any, type:any) => {
     let errorField: String[] = [];
     let bodyTmp;
 
-    if(type.age){
+    if(type.id){
     
      bodyTmp = {
         id : body.id,
         name : body.name,
         lastName: body.lastName,
-        age: body.age,
+        cellphone: body.cellphone,
         genre: body.genre,
         email: body.profile.email,
         password: body.profile.password,
