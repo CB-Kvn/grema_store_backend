@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { LoginProcess, ProfilePassword, Users } from "../interfaces/users.interfaces";
+import { LoginProcess, ProfilePassword, Users } from "../interfaces/grema.interfaces";
 import bcrypt from "bcrypt"
 import { generateToken } from "../utils/tokens/generate_token";
 import { verifyToken } from "../utils/tokens/verify_token";
