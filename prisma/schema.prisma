@@ -17,6 +17,7 @@ model Users {
   cellphone String
   genre String
   profile Profile?
+  favorites Favorites_Carts?
   createAtUsers DateTime?
   updateAtUsers DateTime?
 }
@@ -30,4 +31,51 @@ model Profile {
   userId Int @unique
   createAtProfile DateTime?
   updateAtProfile DateTime?
+
 }
+
+
+model Category{
+  id Int @id @default(autoincrement())
+  name String
+  product Product?
+  status Boolean
+}
+model Product {
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  material String
+  size String
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int @unique
+  favorites Favorites_Carts?
+  price Decimal
+  product Inventory?
+  status Boolean
+}
+
+model Favorites_Carts {
+  user Users @relation(fields: [userId], references: [id])
+  userId Int @unique
+  product Product @relation(fields: [productId], references: [id])
+  productId Int @unique
+  type String
+}
+
+model Inventory {
+  id Int @id @default(autoincrement())
+  product Product @relation(fields: [productId], references: [id])
+  productId Int @unique
+  quantity Int
+  createAtUsers DateTime?
+  updateAtUsers DateTime?
+}
+
+
+
+
+
+
+
+

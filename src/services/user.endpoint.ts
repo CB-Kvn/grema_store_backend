@@ -1,8 +1,8 @@
 import { Response, Request } from "express";
 import { PrismaClient } from "@prisma/client";
 import { UserController } from "../controllers/user.controller";
-import { ResponseUser } from "../interfaces/users.interfaces";
-import { Verified_Fields} from "../utils/verified_fields";
+import { ResponseApi } from "../interfaces/grema.interfaces";
+import { Verified_Fields } from "../utils/verified_fields";
 
 const controller = new UserController();
 const prisma = new PrismaClient({});
@@ -24,9 +24,9 @@ export class UsersEndpoint {
           msg: "Invalid Method",
           error: "Method is a POST but it send a " + req.method,
         });
-      
+
       //Evalua que los parametros enviado en la consulta se encunetren bien
-      const validate: ResponseUser | undefined = Verified_Fields(
+      const validate: ResponseApi | undefined = Verified_Fields(
         body,
         "createNewUser"
       );
@@ -39,7 +39,7 @@ export class UsersEndpoint {
         });
       }
 
-      const response: ResponseUser | undefined = await controller.createNewUser(
+      const response: ResponseApi | undefined = await controller.createNewUser(
         body
       );
 
@@ -70,7 +70,7 @@ export class UsersEndpoint {
           error: "Method is a PUT but it send a " + req.method,
         });
 
-      const validate: ResponseUser | undefined = Verified_Fields(
+      const validate: ResponseApi | undefined = Verified_Fields(
         body,
         "updateProfilePassword"
       );
@@ -83,7 +83,7 @@ export class UsersEndpoint {
         });
       }
 
-      const response: any= await controller.updateProfilePassword(
+      const response: any = await controller.updateProfilePassword(
         body
       );
 
@@ -97,7 +97,7 @@ export class UsersEndpoint {
 
   async updateProfileEmail(req: Request, res: Response) {
     try {
-      
+
       const body = req.body;
 
       const user = await prisma.profile.update({
@@ -114,7 +114,7 @@ export class UsersEndpoint {
     }
   }
 
-  async loginUser(req: Request, res: Response){
+  async loginUser(req: Request, res: Response) {
     try {
       const body = req.body;
 
@@ -125,7 +125,7 @@ export class UsersEndpoint {
           error: "Method is a POST but it send a " + req.method,
         });
 
-      const validate: ResponseUser | undefined = Verified_Fields(
+      const validate: ResponseApi | undefined = Verified_Fields(
         body,
         "loginUser"
       );
@@ -138,7 +138,7 @@ export class UsersEndpoint {
         });
       }
 
-      const response: ResponseUser | undefined = await controller.loginUser(
+      const response: ResponseApi | undefined = await controller.loginUser(
         body
       );
 

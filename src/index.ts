@@ -6,6 +6,8 @@ import compression from "compression";
 import cors from 'cors';
 import config from 'config';
 import { router as userRoutes } from './routes/user.route'
+import { router as categoryRoutes } from './routes/category.route'
+import { router as productRoutes } from './routes/product.route'
 
 const app = express();
 
@@ -22,6 +24,8 @@ app.use(bodyParser.json({ limit: '200mb' }));
 
 let url_base = config.get('url_api')
 app.use(url_base + 'user/', userRoutes)
+app.use(url_base + 'category/', categoryRoutes)
+app.use(url_base + 'product/', productRoutes)
 
 const server = http.createServer(app);
 

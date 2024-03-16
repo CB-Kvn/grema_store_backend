@@ -5,5 +5,5 @@ import { Categories } from "../services/category.endpoint";
 export const router = express.Router()
 const endpoint = new Categories()
 
-router.all('/create-product', endpoint.createCategories)
-router.all('/modify-product', endpoint.updateStatusCategory)
+router.all('/create-category', endpoint.createCategories)
+router.all('/modify-category', endpoint.updateStatusCategory)

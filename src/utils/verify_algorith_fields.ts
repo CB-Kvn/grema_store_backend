@@ -1,5 +1,5 @@
-import { ProfilePassword } from "../../src/interfaces/users.interfaces";
-import { Users } from "../../src/interfaces/users.interfaces";
+import { ProfilePassword } from "../interfaces/grema.interfaces";
+import { Users } from "../interfaces/grema.interfaces";
 
 export const Verified_Fields_Algorith = (body: any, type:any) => {
 

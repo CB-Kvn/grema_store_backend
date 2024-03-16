@@ -1,4 +1,4 @@
-import { EntriesGenerateToken } from "../../interfaces/users.interfaces";
+import { EntriesGenerateToken } from "../../interfaces/grema.interfaces";
 import jwt from "jsonwebtoken";
 
 export const generateToken = (user:EntriesGenerateToken) => {

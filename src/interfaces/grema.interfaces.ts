@@ -12,6 +12,10 @@ export interface Users {
   }
   
 }
+export interface Catergories{
+  name: string
+  active: boolean
+}
 
 export interface ProfilePassword {
   id: number;
@@ -24,7 +28,7 @@ export interface LoginProcess {
   password: string;
 }
 
-export interface ResponseUser {
+export interface ResponseApi {
   success?: string | undefined;
   status?: number;
   msg?: string;

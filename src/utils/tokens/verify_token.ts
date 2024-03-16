@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { DecodeReponseJwt } from "../../interfaces/users.interfaces";
+import { DecodeReponseJwt } from "../../interfaces/grema.interfaces";
 import jwt from "jsonwebtoken";
 
 export const verifyToken = (token: string) => {
