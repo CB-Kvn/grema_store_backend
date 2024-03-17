@@ -53,5 +53,27 @@ export class Categories {
         return res.sendStatus(500);
       }
     }
+
+    async getAllCategory (req: Request, res: Response) {
+      try {
+        const body = req.body;
+        if (req.method !== "GET")
+          return res.status(405).json({
+            status: 405,
+            msg: "Invalid Method",
+            error: "Method is a PUT but it send a " + req.method,
+          });
+
+        const response: any= await controller.getAllCategory(
+          body
+        );
+  
+        if (response!.error) return res.status(response!.status!).json(response);
+  
+        return res.status(200).json(response);
+      } catch (error) {
+        return res.sendStatus(500);
+      }
+    }
   
 }

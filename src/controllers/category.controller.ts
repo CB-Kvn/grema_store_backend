@@ -52,4 +52,23 @@ export class CategoriesController {
       };
     }
   }
+  async getAllCategory(_body: any) {
+    try {
+      const categories = await prisma.category.findMany({
+        
+      });
+      return {
+        success: "Ok",
+        status: 200,
+        msg: "Get all category",
+        data: categories,
+      };
+    } catch (error: any) {
+      return {
+        status: 400,
+        msg: "Error Get all category",
+        error: { ...error },
+      };
+    }
+  }
 }

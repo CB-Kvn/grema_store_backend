@@ -1,9 +1,10 @@
 import express from "express";
 import { isValidated, validateTokenMiddleware } from "../middlewares/validators/validators";
-import { Categories } from "../services/category.endpoint";
+import { Product } from "../services/product.endpoint";
 
 export const router = express.Router()
-const endpoint = new Categories()
+const endpoint = new Product()
 
-router.all('/create-product', endpoint.createCategories)
-router.all('/modify-product', endpoint.updateStatusCategory)
+router.all('/create-product', endpoint.createProduct)
+router.all('/modify-product', endpoint.updateProduct)
+router.all('/modify-product-status', endpoint.updateProductStatus)

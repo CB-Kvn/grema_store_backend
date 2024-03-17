@@ -20,6 +20,7 @@ model Users {
   favorites Favorites_Carts?
   createAtUsers DateTime?
   updateAtUsers DateTime?
+  status Boolean
 }
 model Profile {
   id Int @id @default(autoincrement())

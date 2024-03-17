@@ -53,10 +53,25 @@ export class UsersEndpoint {
 
   async deleteUser(req: Request, res: Response) {
     try {
-      console.log("Estoy dentro del endpoint");
-      return res.status(200).json({ msg: "Estamos bien" });
+      const body = req.body;
+      if (req.method !== "PUT")
+        return res.status(405).json({
+          status: 405,
+          msg: "Invalid Method",
+          error: "Method is a PUT but it send a " + req.method,
+        });
+
+
+
+      const response: any = await controller.deleteUser(
+        body
+      );
+
+      if (response!.error) return res.status(response!.status!).json(response);
+
+      return res.status(200).json(response);
     } catch (error) {
-      return res.sendStatus(400);
+      return res.sendStatus(500);
     }
   }
 

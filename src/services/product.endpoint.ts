@@ -1,12 +1,12 @@
 import { Response, Request } from "express";
 import { ResponseApi } from "../interfaces/grema.interfaces";
 import { PrismaClient } from "@prisma/client";
-import { CategoriesController } from "../controllers/category.controller";
+import { ProductController } from "../controllers/product.controller";
 
-const controller = new CategoriesController();
+const controller = new ProductController();
 const prisma = new PrismaClient({});
 
-export class Categories {
+export class Product {
     
     async createProduct (req: Request, res: Response){
         try {
@@ -20,7 +20,7 @@ export class Categories {
               });
           
       
-            const response: ResponseApi | undefined = await controller.createCategories(
+            const response: ResponseApi | undefined = await controller.createProduct(
               body
             );
       
@@ -42,7 +42,29 @@ export class Categories {
             error: "Method is a PUT but it send a " + req.method,
           });
 
-        const response: any= await controller.updateStatusCategory(
+        const response: any= await controller.updateProduct(
+          body
+        );
+  
+        if (response!.error) return res.status(response!.status!).json(response);
+  
+        return res.status(200).json(response);
+      } catch (error) {
+        return res.sendStatus(500);
+      }
+    }
+
+    async updateProductStatus(req: Request, res: Response) {
+      try {
+        const body = req.body;
+        if (req.method !== "PUT")
+          return res.status(405).json({
+            status: 405,
+            msg: "Invalid Method",
+            error: "Method is a PUT but it send a " + req.method,
+          });
+
+        const response: any= await controller.updateProductStatus(
           body
         );
   

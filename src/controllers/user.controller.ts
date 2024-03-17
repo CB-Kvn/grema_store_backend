@@ -25,6 +25,7 @@ export class UserController {
           createAtUsers: new Date(),
           updateAtUsers: new Date(),
           genre: _body.genre,
+          status:true,
           profile: {
             create: {
               email: _body.profile.email,
@@ -67,12 +68,29 @@ export class UserController {
       );
     } catch (error) { }
   }
-  async deleteUser() {
+  async deleteUser(_body:any) {
     try {
-      console.log(
-        "Sirve para llamar a la base de datos o los diferents metodos para el tratamiento de informacion"
-      );
-    } catch (error) { }
+      const user = await prisma.users.update({
+        where: {
+          id: _body.id,
+        },
+        data: {
+          status: false,
+        },
+      });
+      return {
+        success: "Ok",
+        status: 200,
+        msg: "Update password in profile",
+        data: _body,
+      };
+    } catch (error: any) {
+      return {
+        status: 400,
+        msg: "Error update profile",
+        error: { ...error },
+      };
+    }
   }
   async updateProfilePassword(_body: ProfilePassword) {
     try {

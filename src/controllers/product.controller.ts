@@ -61,13 +61,13 @@ export class ProductController {
       return {
         success: "Ok",
         status: 200,
-        msg: "Update password in profile",
+        msg: "Update product",
         data: _body,
       };
     } catch (error: any) {
       return {
         status: 400,
-        msg: "Error update profile",
+        msg: "Error update product",
         error: { ...error },
       };
     }
