@@ -6,19 +6,21 @@ import { generateToken } from "../utils/tokens/generate_token";
 
 const prisma = new PrismaClient({});
 export class ProductController {
-  
+
   async createProduct(_body: any) {
     try {
-      
+
       const user = await prisma.product.create({
         data: {
           name: _body.name,
-          description: _body.description ,
-          material: _body.material ,
-          size:_body.size ,
-          categoryId: _body.categoryId ,
+          description: _body.description,
+          material: _body.material,
+          size: _body.size,
+          categoryId: _body.categoryId,
           price: _body.price,
-          status: true
+          status: true,
+          color: _body.color,
+          shape: _body.shape
         },
       });
 
@@ -33,7 +35,7 @@ export class ProductController {
         return {
           status: 409,
           msg: "Error create new product",
-          info: "User already exist",
+          info: "New product already exist",
           error: { ...error },
         };
 
@@ -56,6 +58,8 @@ export class ProductController {
           material: _body.material,
           size: _body.size,
           price: _body.price,
+          color: _body.color,
+          shape: _body.shape
         },
       });
       return {
@@ -72,7 +76,6 @@ export class ProductController {
       };
     }
   }
-
   async updateProductStatus(_body: any) {
     try {
       const user = await prisma.product.update({
@@ -97,6 +100,117 @@ export class ProductController {
       };
     }
   }
+  async getAllProduct(_body:any) {
+    try {
+      const product = await prisma.product.findMany({
+
+        where: {
+          AND: [
+            {
+              category: {
+                status: true
+
+              },
+            },
+            {
+              status: true
+            }
+          ]
+
+        },
+        include: {
+          category: {
+            select: {
+              name: true
+            }
+          }
+        },
+        skip: _body.skip,
+        take: _body.take
+
+      });
+      return {
+        success: "Ok",
+        status: 200,
+        msg: "Get all product",
+        data: product,
+      };
+    } catch (error: any) {
+      return {
+        status: 400,
+        msg: "Error Get all product",
+        error: { ...error },
+      };
+    }
+  }
+  async getAllFilters(_body: any) {
+    try {
+      const product = await prisma.product.findMany({
+
+        where: {
+          AND: [
+            {
+              category: {
+                status: true
+
+              },
+            },
+            {
+              status: true
+            },
+            {
+              color: {
+                in: _body.colors
+              }
+            },
+            {
+              material: {
+                in: _body.materials
+              }
+            },
+            {
+              size: {
+                in: _body.sizes
+              }
+            },
+            {
+              category: {
+                name: {
+                  in: _body.names
+                }
+
+              },
+            },
+          ]
+
+        },
+        include: {
+          category: {
+            select: {
+              name: true
+            }
+          }
+        },
+        skip: _body.skip,
+        take: _body.take
+
+
+      });
+      return {
+        success: "Ok",
+        status: 200,
+        msg: "Get all product",
+        data: product,
+      };
+    } catch (error: any) {
+      return {
+        status: 400,
+        msg: "Error Get all product",
+        error: { ...error },
+      };
+    }
+  }
+
 
 
 }
