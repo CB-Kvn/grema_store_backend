@@ -8,6 +8,7 @@ import config from 'config';
 import { router as userRoutes } from './routes/user.route'
 import { router as categoryRoutes } from './routes/category.route'
 import { router as productRoutes } from './routes/product.route'
+import { router as filterstRoutes } from './routes/filters.route'
 
 const app = express();
 
@@ -26,6 +27,7 @@ let url_base = config.get('url_api')
 app.use(url_base + 'user/', userRoutes)
 app.use(url_base + 'category/', categoryRoutes)
 app.use(url_base + 'product/', productRoutes)
+app.use(url_base + 'filters/', filterstRoutes)
 
 const server = http.createServer(app);
 

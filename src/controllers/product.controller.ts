@@ -160,23 +160,28 @@ export class ProductController {
             },
             {
               color: {
-                in: _body.colors
+                in: _body.color
               }
             },
             {
               material: {
-                in: _body.materials
+                in: _body.material
               }
             },
             {
               size: {
-                in: _body.sizes
+                in: _body.tam
+              }
+            },
+            {
+              shape: {
+                in: _body.forma
               }
             },
             {
               category: {
                 name: {
-                  in: _body.names
+                  in: _body.categoria
                 }
 
               },
