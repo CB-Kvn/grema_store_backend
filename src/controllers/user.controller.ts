@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { ProfilePassword, Users } from "../interfaces/users.interfaces";
+import { LoginProcess, ProfilePassword, Users } from "../interfaces/grema.interfaces";
 import bcrypt from "bcrypt"
 import { generateToken } from "../utils/tokens/generate_token";
 import { verifyToken } from "../utils/tokens/verify_token";
@@ -15,22 +15,23 @@ export class UserController {
   }
   async createNewUser(_body: Users) {
     try {
-      const hashedPassword = await bcrypt.hash(_body.password, 10);
+      const hashedPassword = await bcrypt.hash(_body.profile.password, 10);
       const user = await prisma.users.create({
         data: {
           id: _body.id,
           name: _body.name,
           lastName: _body.lastName,
-          age: _body.age,
-          dateOfBirth: new Date(),
+          cellphone: _body.cellphone,
           createAtUsers: new Date(),
           updateAtUsers: new Date(),
           genre: _body.genre,
+          status:true,
           profile: {
             create: {
-              email: _body.email,
+              email: _body.profile.email,
               password: hashedPassword,
-              address: _body.address,
+              address: _body.profile.address,
+              image: _body.profile.image,
               createAtProfile: new Date(),
               updateAtProfile: new Date(),
             },
@@ -67,12 +68,29 @@ export class UserController {
       );
     } catch (error) { }
   }
-  async deleteUser() {
+  async deleteUser(_body:any) {
     try {
-      console.log(
-        "Sirve para llamar a la base de datos o los diferents metodos para el tratamiento de informacion"
-      );
-    } catch (error) { }
+      const user = await prisma.users.update({
+        where: {
+          id: _body.id,
+        },
+        data: {
+          status: false,
+        },
+      });
+      return {
+        success: "Ok",
+        status: 200,
+        msg: "Update password in profile",
+        data: _body,
+      };
+    } catch (error: any) {
+      return {
+        status: 400,
+        msg: "Error update profile",
+        error: { ...error },
+      };
+    }
   }
   async updateProfilePassword(_body: ProfilePassword) {
     try {
@@ -99,19 +117,30 @@ export class UserController {
     }
   }
 
-  async loginUser(_body: any) {
+  async loginUser(_body: LoginProcess) {
     try {
+
+      
+
       const result = await prisma.profile.findFirst({
         where: {
           email: _body.email,
-          password: _body.password
         },
       })
 
       if (!result) {
         return {
           status: 204,
-          msg: "User not exist",
+          msg: "User not found",
+        };
+      }
+
+      const verifiedPassword = await bcrypt.compare (_body.password,result.password)
+
+      if(!verifiedPassword) {
+        return {
+          status: 204,
+          msg: "Invalid password",
         };
       }
 

@@ -2,11 +2,19 @@ export interface Users {
   id: number;
   name: string;
   lastName: string;
-  age: number;
+  cellphone: string;
   genre: string;
-  email: string;
-  password: string;
-  address: string;
+  profile:{
+    email: string;
+    password: string;
+    address: string;
+    image: string
+  }
+  
+}
+export interface Catergories{
+  name: string
+  active: boolean
 }
 
 export interface ProfilePassword {
@@ -15,7 +23,12 @@ export interface ProfilePassword {
   password: string;
 }
 
-export interface ResponseUser {
+export interface LoginProcess {
+  email: string;
+  password: string;
+}
+
+export interface ResponseApi {
   success?: string | undefined;
   status?: number;
   msg?: string;
@@ -29,7 +42,7 @@ export enum KeysToValidateUserCreate {
   id = "id",
   name = "name",
   lastName = "lastName",
-  age = "age",
+  cellphone = "cellphone",
   genre = "genre",
   email = "email",
   password = "password",

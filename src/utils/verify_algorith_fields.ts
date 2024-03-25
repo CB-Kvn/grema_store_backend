@@ -1,15 +1,32 @@
-import { ProfilePassword } from "../../src/interfaces/users.interfaces";
-import { Users } from "../../src/interfaces/users.interfaces";
+import { ProfilePassword } from "../interfaces/grema.interfaces";
+import { Users } from "../interfaces/grema.interfaces";
 
-export const Verified_Fields_Algorith = (body: Users | ProfilePassword, type:any) => {
+export const Verified_Fields_Algorith = (body: any, type:any) => {
 
     let data = {};
     let valiField = false;
     let valiFieldContent = false;
     let noFieldExist: String[] = [];
     let errorField: String[] = [];
+    let bodyTmp;
 
-    const keysInBody = Object.keys(body).map((value) => {
+    if(type.id){
+    
+     bodyTmp = {
+        id : body.id,
+        name : body.name,
+        lastName: body.lastName,
+        cellphone: body.cellphone,
+        genre: body.genre,
+        email: body.profile.email,
+        password: body.profile.password,
+        address: body.profile.address
+     }
+    }else{
+        bodyTmp = body
+    }
+
+    const keysInBody = Object.keys(bodyTmp).map((value) => {
         return value.toString();
     });
     const keysInEnum = Object.keys(type).map((value) => {
@@ -37,6 +54,8 @@ export const Verified_Fields_Algorith = (body: Users | ProfilePassword, type:any
 
         }
     })
+
+
 
     if (valiField || valiFieldContent) {
 
