@@ -4,13 +4,15 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import compression from "compression";
 import cors from 'cors';
-import config from 'config';
+import dotenv from 'dotenv'; 
+
 import { router as userRoutes } from './routes/user.route'
 import { router as categoryRoutes } from './routes/category.route'
 import { router as productRoutes } from './routes/product.route'
 import { router as filterstRoutes } from './routes/filters.route'
 
 const app = express();
+dotenv.config();
 
 app.use(cors({
     credentials: true,
@@ -23,7 +25,7 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ limit: '200mb' }));
 
-let url_base = config.get('url_api')
+let url_base = process.env.URL_API
 app.use(url_base + 'user/', userRoutes)
 app.use(url_base + 'category/', categoryRoutes)
 app.use(url_base + 'product/', productRoutes)
@@ -31,7 +33,7 @@ app.use(url_base + 'filters/', filterstRoutes)
 
 const server = http.createServer(app);
 
-let port = config.get('port')
+let port = process.env.PORT
 
 if (!port) {
     process.exit(1)
