@@ -76,7 +76,7 @@ model Inventory {
   product Product @relation(fields: [productId], references: [id])
   productId Int
   quantity Int
-  image String
+  image String[]
   createAtUsers DateTime?
   updateAtUsers DateTime?
 }
