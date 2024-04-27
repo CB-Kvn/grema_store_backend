@@ -5,11 +5,13 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import cors from 'cors';
 import dotenv from 'dotenv'; 
+import path from 'path'
 
 import { router as userRoutes } from './routes/user.route'
 import { router as categoryRoutes } from './routes/category.route'
 import { router as productRoutes } from './routes/product.route'
 import { router as filterstRoutes } from './routes/filters.route'
+import multer from "multer";
 
 const app = express();
 dotenv.config();
@@ -22,8 +24,19 @@ app.use(cors({
 
 app.use(compression());
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json({ limit: '200mb' }));
+
+const storage = multer.diskStorage({
+      destination: path.join(__dirname, 'public/img/uploads'),
+      filename: function (req, file, cb) {
+        cb(null, `${Date.now()}-${file.originalname}`);
+      }
+    });
+
+app.use(multer({storage}).array('images'));
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 let url_base = process.env.URL_API
 app.use(url_base + 'user/', userRoutes)
