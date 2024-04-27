@@ -4,7 +4,7 @@ import {
   KeysToValidateProfilePassword,
   KeysToValidateUserCreate,
   KeysToValidateProfileLogin,
-} from "../interfaces/grema.interfaces";
+} from "../../interfaces/grema.interfaces";
 import { Verified_Fields_Algorith } from "./verify_algorith_fields";
 
 export const  Verified_Fields = (body: Users | ProfilePassword, type: string) => {

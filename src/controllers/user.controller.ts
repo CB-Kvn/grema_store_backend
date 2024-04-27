@@ -13,7 +13,7 @@ export class UserController {
       );
     } catch (error) { }
   }
-  async createNewUser(_body: Users) {
+  async createNewUser(_body: Users, urlList:string[]) {
     try {
       const hashedPassword = await bcrypt.hash(_body.profile.password, 10);
       const user = await prisma.users.create({
@@ -31,7 +31,7 @@ export class UserController {
               email: _body.profile.email,
               password: hashedPassword,
               address: _body.profile.address,
-              image: _body.profile.image,
+              image: urlList[0],
               createAtProfile: new Date(),
               updateAtProfile: new Date(),
             },
@@ -149,10 +149,12 @@ export class UserController {
         status: 200,
         msg: "Found User",
         data: {
-          ..._body, token: generateToken({
+          email:result.email,
+          userID:result.id,
+          image:result.image,
+            token: generateToken({
             userId: result.id,
-            email: result.email,
-            password: result.password
+            email: result.email
           })
         },
       };

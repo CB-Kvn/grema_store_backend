@@ -2,7 +2,8 @@ import { Response, Request } from "express";
 import { PrismaClient } from "@prisma/client";
 import { UserController } from "../controllers/user.controller";
 import { ResponseApi } from "../interfaces/grema.interfaces";
-import { Verified_Fields } from "../utils/verified_fields";
+import { Verified_Fields } from "../utils/validations/verified_fields";
+import { cloudinaryUpload } from "../utils/upload/upload_handler";
 
 const controller = new UserController();
 const prisma = new PrismaClient({});
@@ -16,8 +17,8 @@ export class UsersEndpoint {
   }
   async createNewUser(req: Request, res: Response) {
     try {
-      const body = req.body;
-
+      const body = JSON.parse(JSON.stringify(req.body)) ;
+      
       if (req.method !== "POST")
         return res.status(405).json({
           status: 405,
@@ -25,9 +26,16 @@ export class UsersEndpoint {
           error: "Method is a POST but it send a " + req.method,
         });
 
+        
+        if (!req.files || req.files.length === 0) {
+          console.log('No hay imagenes')
+        }
+        const urlList = await cloudinaryUpload(req.files! as Express.Multer.File[])
+        
+        console.log(urlList)
       //Evalua que los parametros enviado en la consulta se encunetren bien
       const validate: ResponseApi | undefined = Verified_Fields(
-        body,
+        JSON.parse(body.body),
         "createNewUser"
       );
 
@@ -40,7 +48,8 @@ export class UsersEndpoint {
       }
 
       const response: ResponseApi | undefined = await controller.createNewUser(
-        body
+        JSON.parse(body.body),
+        urlList
       );
 
       if (response!.error) return res.status(response!.status!).json(response);

@@ -61,7 +61,6 @@ export enum KeysToValidateProfileLogin {
 export interface EntriesGenerateToken {
   userId: number;
   email: string;
-  password: string;
 }
 
 export interface DecodeReponseJwt {
