@@ -59,12 +59,12 @@ export enum KeysToValidateProfileLogin {
 }
 
 export interface EntriesGenerateToken {
-  userId: number;
+  userId: number | string;
   email: string;
 }
 
 export interface DecodeReponseJwt {
-  userId: number;
+  userId: number | string;
   email: string;
   password: string;
   iat: number;

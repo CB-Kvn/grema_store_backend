@@ -2,8 +2,8 @@ import { PrismaClient } from "@prisma/client";
 import { LoginProcess, ProfilePassword, Users } from "../interfaces/grema.interfaces";
 import bcrypt from "bcrypt"
 import { generateToken } from "../utils/tokens/generate_token";
-import { verifyToken } from "../utils/tokens/verify_token";
-import { body } from "express-validator";
+import { Request } from "express";
+import { verifyTokenAndHeaders } from "../utils/tokens/verify_token";
 const prisma = new PrismaClient({});
 export class UserController {
   async getUser() {
@@ -13,7 +13,7 @@ export class UserController {
       );
     } catch (error) { }
   }
-  async createNewUser(_body: Users, urlList:string[]) {
+  async createNewUser(_body: Users, urlList: string[]) {
     try {
       const hashedPassword = await bcrypt.hash(_body.profile.password, 10);
       const user = await prisma.users.create({
@@ -25,7 +25,7 @@ export class UserController {
           createAtUsers: new Date(),
           updateAtUsers: new Date(),
           genre: _body.genre,
-          status:true,
+          status: true,
           profile: {
             create: {
               email: _body.profile.email,
@@ -68,7 +68,7 @@ export class UserController {
       );
     } catch (error) { }
   }
-  async deleteUser(_body:any) {
+  async deleteUser(_body: any) {
     try {
       const user = await prisma.users.update({
         where: {
@@ -120,7 +120,7 @@ export class UserController {
   async loginUser(_body: LoginProcess) {
     try {
 
-      
+
 
       const result = await prisma.profile.findFirst({
         where: {
@@ -135,9 +135,9 @@ export class UserController {
         };
       }
 
-      const verifiedPassword = await bcrypt.compare (_body.password,result.password)
+      const verifiedPassword = await bcrypt.compare(_body.password, result.password)
 
-      if(!verifiedPassword) {
+      if (!verifiedPassword) {
         return {
           status: 204,
           msg: "Invalid password",
@@ -149,21 +149,91 @@ export class UserController {
         status: 200,
         msg: "Found User",
         data: {
-          email:result.email,
-          userID:result.id,
-          image:result.image,
-            token: generateToken({
+          email: result.email,
+          userId: result.id,
+          image: result.image,
+          token: generateToken({
             userId: result.id,
             email: result.email
-          })
+          }),
+          type: "inscript"
         },
       };
-    } catch (error:any) {
+    } catch (error: any) {
       return {
         status: 400,
         msg: "Error search user",
         error: { ...error },
       };
     }
+  }
+
+  async loginGuest(_body: string) {
+    try {
+
+
+
+      const result = generateToken({ userId: _body, email: "" })
+
+      if (!result) {
+        return {
+          status: 204,
+          msg: "User not found",
+        };
+      }
+
+
+      return {
+        success: "Ok",
+        status: 200,
+        msg: "Found User",
+        data: {
+          email: "",
+          userId: _body,
+          image: "",
+          token: result,
+          type: "guest"
+        },
+      };
+    } catch (error: any) {
+      return {
+        status: 400,
+        msg: "Error search user",
+        error: { ...error },
+      };
+    }
+  }
+
+  async refreshToken(req: Request) {
+
+    try {
+      const { headers } = req
+      const id = headers.user as string
+      const email = headers.email as string
+      const image = headers.image as string
+      let result
+
+
+    
+      return {
+        success: "Ok",
+        status: 200,
+        msg: "Token generate",
+        data: {
+          email: email,
+          userId: id,
+          image: image,
+          token: generateToken({
+            userId: id,
+            email: email
+          }),
+          type: "inscript"
+        },
+      };
+
+    } catch (error) {
+      return error
+    }
+
   }
 }
