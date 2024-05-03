@@ -13,3 +13,5 @@ router.all('/reset-profile-email', isValidated, validateTokenMiddleware, endpoin
 router.all('/reset-profile-password', isValidated, validateTokenMiddleware, endpoint.updateProfilePassword)
 
 router.post('/loggin-user',isValidated, endpoint.loginUser)
+router.post('/loggin-user-guest', endpoint.loginGuest)
+router.post('/loggin-user-guest-refresh', endpoint.refreshGuestToken)
