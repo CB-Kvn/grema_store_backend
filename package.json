@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx prisma migrate deploy --name init && nodemon  "
+    "build": "npx prisma migrate deploy  && nodemon  "
   },
   "keywords": [],
   "author": "",
