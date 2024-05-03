@@ -8,6 +8,5 @@ const endpoint = new Product()
 
 router.all('/create-product', endpoint.createProduct)
 router.all('/modify-product', endpoint.updateProduct)
-router.all('/modify-product-status', endpoint.updateProductStatus)
-router.all('/get-all', validateTokenMiddleware,endpoint.getAllProduct)
-router.all('/get-all-filters',validateTokenMiddleware, endpoint.getAllFilters)
+router.all('/get-all' ,endpoint.getAllProduct)
+router.all('/get-all-filters', endpoint.getAllFilters)

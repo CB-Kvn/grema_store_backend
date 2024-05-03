@@ -70,3 +70,41 @@ export interface DecodeReponseJwt {
   iat: number;
   exp: number;
 }
+
+
+export interface ProductInventory {
+  quantity: number;
+  image: string[];
+  price: number;
+  status: boolean;
+  desc: number;
+  typeDesc:string;
+  createAtProductInventory: Date;
+  updateAtProductInventory: Date;
+}
+
+export interface Product {
+  name: string;
+  description: string;
+  material: string;
+  size: string;
+  shape: string;
+  categoryId: number; // or whatever type categoryId is
+  color: string;
+  createAtProduct: Date;
+  updateAtProduct: Date;
+  inventory: ProductInventory; // Nested object
+}
+export interface Favorities_Cart {
+  id:string
+  userId: number
+  productId: number
+  type: string
+  quantyOrder: number
+  status: boolean
+}
+
+export interface RemoveFav_Car {
+  id:string
+
+}

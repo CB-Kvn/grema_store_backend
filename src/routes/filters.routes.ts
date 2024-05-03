@@ -5,4 +5,4 @@ import { validateTokenMiddleware } from "../middlewares/validators/validators";
 export const router = express.Router()
 const endpoint = new Filters()
 
-router.all('/filters',validateTokenMiddleware, endpoint.getAllFilters)
+router.all('/filters', endpoint.getAllFilters)

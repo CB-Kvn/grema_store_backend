@@ -126,6 +126,23 @@ export class UserController {
         where: {
           email: _body.email,
         },
+        select: {
+          userId: true,
+          password: true,
+          address: true,
+          createAtProfile: true,
+          email: true,
+          id: true,
+          image: true,
+          updateAtProfile: true,
+          user: {
+            select: {
+              id: true
+            }
+          }
+
+        },
+
       })
 
       if (!result) {
@@ -150,13 +167,14 @@ export class UserController {
         msg: "Found User",
         data: {
           email: result.email,
-          userId: result.id,
+          userId: result.user.id,
           image: result.image,
           token: generateToken({
             userId: result.id,
             email: result.email
           }),
-          type: "inscript"
+          type: "inscript",
+          profileId: result.id
         },
       };
     } catch (error: any) {
@@ -214,7 +232,7 @@ export class UserController {
       let result
 
 
-    
+
       return {
         success: "Ok",
         status: 200,

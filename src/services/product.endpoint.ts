@@ -43,7 +43,7 @@ export class Product {
             error: "Method is a PUT but it send a " + req.method,
           });
 
-        const response: any= await controller.updateProduct(
+        const response: ResponseApi = await controller.updateProduct(
           body
         );
   
@@ -54,27 +54,27 @@ export class Product {
         return res.sendStatus(500);
       }
     }
-    async updateProductStatus(req: Request, res: Response) {
-      try {
-        const body = req.body;
-        if (req.method !== "PUT")
-          return res.status(405).json({
-            status: 405,
-            msg: "Invalid Method",
-            error: "Method is a PUT but it send a " + req.method,
-          });
+    // async updateProductStatus(req: Request, res: Response) {
+    //   try {
+    //     const body = req.body;
+    //     if (req.method !== "PUT")
+    //       return res.status(405).json({
+    //         status: 405,
+    //         msg: "Invalid Method",
+    //         error: "Method is a PUT but it send a " + req.method,
+    //       });
 
-        const response: any= await controller.updateProductStatus(
-          body
-        );
+    //     const response: any= await controller.updateProductStatus(
+    //       body
+    //     );
   
-        if (response!.error) return res.status(response!.status!).json(response);
+    //     if (response!.error) return res.status(response!.status!).json(response);
   
-        return res.status(200).json(response);
-      } catch (error) {
-        return res.sendStatus(500);
-      }
-    }
+    //     return res.status(200).json(response);
+    //   } catch (error) {
+    //     return res.sendStatus(500);
+    //   }
+    // }
     async getAllProduct (req: Request, res: Response) {
       try {
         const body = req.body;
@@ -85,7 +85,7 @@ export class Product {
             error: "Method is a PUT but it send a " + req.method,
           });
 
-        const response: any= await controller.getAllProduct(body);
+        const response: ResponseApi = await controller.getAllProduct(body);
   
         if (response!.error) return res.status(response!.status!).json(response);
   
@@ -104,7 +104,7 @@ export class Product {
             error: "Method is a PUT but it send a " + req.method,
           });
 
-        const response: any= await controller.getAllFilters(body);
+        const response: ResponseApi = await controller.getAllFilters(body);
   
         if (response!.error) return res.status(response!.status!).json(response);
   

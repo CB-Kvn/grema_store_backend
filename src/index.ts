@@ -7,10 +7,13 @@ import cors from 'cors';
 import dotenv from 'dotenv'; 
 import path from 'path'
 
-import { router as userRoutes } from './routes/user.route'
-import { router as categoryRoutes } from './routes/category.route'
-import { router as productRoutes } from './routes/product.route'
-import { router as filterstRoutes } from './routes/filters.route'
+import { router as userRoutes } from './routes/user.routes'
+import { router as categoryRoutes } from './routes/category.routes'
+import { router as productRoutes } from './routes/product.routes'
+import { router as filterstRoutes } from './routes/filters.routes'
+import { router as favorities } from './routes/favorites.routes'
+import { router as shopping } from './routes/shoppinCar.routes'
+
 import multer from "multer";
 
 const app = express();
@@ -43,6 +46,8 @@ app.use(url_base + 'user/', userRoutes)
 app.use(url_base + 'category/', categoryRoutes)
 app.use(url_base + 'product/', productRoutes)
 app.use(url_base + 'filters/', filterstRoutes)
+app.use(url_base + 'favorities/', favorities)
+app.use(url_base + 'shopping/', shopping)
 
 const server = http.createServer(app);
 
