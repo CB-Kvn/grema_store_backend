@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { LoginProcess, ProfilePassword, Users } from "../interfaces/grema.interfaces";
 import bcrypt from "bcrypt"
 import { generateToken } from "../utils/tokens/generate_token";
-import { Request } from "express";
+import { request, Request } from "express";
 import { verifyTokenAndHeaders } from "../utils/tokens/verify_token";
 const prisma = new PrismaClient({});
 export class UserController {
@@ -137,7 +137,11 @@ export class UserController {
           updateAtProfile: true,
           user: {
             select: {
-              id: true
+              id: true,
+              name:true,
+              lastName:true,
+              cellphone:true,
+
             }
           }
 
@@ -167,6 +171,9 @@ export class UserController {
         msg: "Found User",
         data: {
           email: result.email,
+          address: result.address,
+          phone: result.user.cellphone,
+          name: result.user.name +" "+result.user.lastName,
           userId: result.user.id,
           image: result.image,
           token: generateToken({
