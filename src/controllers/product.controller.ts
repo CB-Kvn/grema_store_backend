@@ -101,36 +101,6 @@ export class ProductController {
       };
     }
   }
-  // async updateProductStatus(_body: any) {
-  //   try {
-  //     const user = await prisma.product.update({
-  //       where: {
-  //         id: _body.id,
-  //       },
-  //       data:  {
-  //         product:{
-
-  //             status: true
-  //           }
-
-  //         }
-
-  //       },
-  //     });
-  //     return {
-  //       success: "Ok",
-  //       status: 200,
-  //       msg: "Update status product",
-  //       data: _body,
-  //     };
-  //   } catch (error: any) {
-  //     return {
-  //       status: 400,
-  //       msg: "Error update status product",
-  //       error: { ...error },
-  //     };
-  //   }
-  // }
   async getAllProduct(_body: any) {
     try {
       const product = await prisma.inventory.findMany({
