@@ -99,7 +99,7 @@ export interface Product {
 export interface Favorities_Cart {
   id:string
   userId: number
-  productId: number
+  productId: string
   type: string
   quantyOrder: number
   status: boolean

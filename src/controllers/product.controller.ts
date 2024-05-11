@@ -3,11 +3,11 @@ import { LoginProcess, Product, ProfilePassword, Users } from "../interfaces/gre
 import bcrypt from "bcrypt"
 import { generateToken } from "../utils/tokens/generate_token";
 import { DateTime } from "luxon";
-
+import { v4 as uuidv4 } from 'uuid';
 
 const prisma = new PrismaClient({});
 export class ProductController {
-
+ 
   async createProduct(_body: Product[]) {
     try {
 
@@ -16,6 +16,7 @@ export class ProductController {
       const response = _body.map(async (element) => {
         let product = await prisma.inventory.create({
           data: {
+            id: uuidv4(),
             quantity: element.inventory.quantity,
             image: element.inventory.image,
             price: element.inventory.price,
@@ -24,8 +25,10 @@ export class ProductController {
             typeDesc:element.inventory.typeDesc,
             createAtProductInventory: date,
             updateAtProductInventory: date,
+            
             product: {
               create: {
+                id: uuidv4(),
                 name: element.name,
                 description: element.description,
                 material: element.material,

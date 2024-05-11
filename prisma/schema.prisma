@@ -37,7 +37,7 @@ model Profile {
 
 
 model Category{
-  id String @id @unique
+  id String @id
   name String
   products Product[]
   status Boolean
@@ -45,7 +45,7 @@ model Category{
   updateAtProfile DateTime?
 }
 model Product {
-  id Int @id @default(autoincrement())
+  id String @id 
   name String
   description String
   material String
@@ -61,9 +61,9 @@ model Product {
 }
 
 model Inventory {
-  id Int @id @default(autoincrement())
+  id String @id
   product Product @relation(fields: [productId], references: [id])
-  productId Int
+  productId String
   quantity Int
   image String[]
   price Decimal
@@ -79,7 +79,7 @@ model Favorites_Carts {
   user Users @relation(fields: [userId], references: [id])
   userId Int
   product Product @relation(fields: [productId], references: [id])
-  productId Int 
+  productId String 
   type String
   quantity Int
   status Boolean
