@@ -92,7 +92,7 @@ export interface Product {
   material: string;
   size: string;
   shape: string;
-  categoryId: number; // or whatever type categoryId is
+  categoryId: string; // or whatever type categoryId is
   color: string;
   createAtProduct: Date;
   updateAtProduct: Date;
