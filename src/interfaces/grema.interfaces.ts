@@ -14,7 +14,10 @@ export interface Users {
 }
 export interface Catergories{
   name: string
-  active: boolean
+}
+
+export interface CategoriesEntry{
+  categories:Catergories[]
 }
 
 export interface ProfilePassword {

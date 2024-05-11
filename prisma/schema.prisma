@@ -37,7 +37,7 @@ model Profile {
 
 
 model Category{
-  id Int @id @default(autoincrement())
+  id String @id @unique
   name String
   products Product[]
   status Boolean
@@ -52,7 +52,7 @@ model Product {
   size String
   shape String
   category Category @relation(fields: [categoryId], references: [id])
-  categoryId Int
+  categoryId String
   favorites Favorites_Carts[]
   product Inventory[]
   color String
