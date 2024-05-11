@@ -8,7 +8,7 @@ export class CategoriesController {
   async createCategories(_body: CategoriesEntry) {
     try {
       const response = _body.categories.map(async (element) => {
-      const category = await prisma.category.createMany({
+      const category = await prisma.category.create({
         data: {
           id : uuidv4(),
           name: element.name,
@@ -16,8 +16,7 @@ export class CategoriesController {
           createAtProfile:DateTime.now().setZone('America/Mexico_City').toString(),
           updateAtProfile:DateTime.now().setZone('America/Mexico_City').toString(),
           
-        },
-        skipDuplicates: true,
+        }
       });
 
     })
