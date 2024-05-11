@@ -1,13 +1,13 @@
 import { PrismaClient } from "@prisma/client";
-import { CategoriesEntry, Catergories } from "../interfaces/grema.interfaces";
 import { DateTime } from "luxon";
+import { Categories } from "../interfaces/grema.interfaces";
 import { v4 as uuidv4 } from 'uuid';
 
 const prisma = new PrismaClient({});
 export class CategoriesController {
-  async createCategories(_body: CategoriesEntry) {
+  async createCategories(_body: Categories[]) {
     try {
-      const response = _body.categories.map(async (element) => {
+      const response = _body.map(async (element) => {
       const category = await prisma.category.create({
         data: {
           id : uuidv4(),
