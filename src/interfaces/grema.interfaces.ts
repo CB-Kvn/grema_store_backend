@@ -12,13 +12,11 @@ export interface Users {
   }
   
 }
-export interface Catergories{
+export interface Categories{
   name: string
 }
 
-export interface CategoriesEntry{
-  categories:Catergories[]
-}
+
 
 export interface ProfilePassword {
   id: number;
