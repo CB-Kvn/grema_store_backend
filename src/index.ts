@@ -43,6 +43,7 @@ app.use(multer({storage}).array('images'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 let url_base = process.env.URL_API
+console.log(url_base)
 app.use(url_base + 'user/', userRoutes)
 app.use(url_base + 'category/', categoryRoutes)
 app.use(url_base + 'product/', productRoutes)
