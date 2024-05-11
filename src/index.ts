@@ -13,6 +13,7 @@ import { router as productRoutes } from './routes/product.routes'
 import { router as filterstRoutes } from './routes/filters.routes'
 import { router as favorities } from './routes/favorites.routes'
 import { router as shopping } from './routes/shoppinCar.routes'
+import { router as emails } from './routes/sendEmails.routes'
 
 import multer from "multer";
 
@@ -48,6 +49,7 @@ app.use(url_base + 'product/', productRoutes)
 app.use(url_base + 'filters/', filterstRoutes)
 app.use(url_base + 'favorities/', favorities)
 app.use(url_base + 'shopping/', shopping)
+app.use(url_base + 'email/', emails)
 
 const server = http.createServer(app);
 
