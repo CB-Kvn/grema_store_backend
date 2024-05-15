@@ -28,16 +28,20 @@ export class UsersEndpoint {
           error: "Method is a POST but it send a " + req.method,
         });
 
+      let urlList: string[] = []
 
-      if (!req.files || req.files.length === 0) {
+      if (req.files && req.files.length !== 0) {
+        urlList = await cloudinaryUpload(req.files! as Express.Multer.File[])
+        console.log(urlList)
+      } else {
+        urlList.push("https://res.cloudinary.com/denqtcsyy/image/upload/f_auto,q_auto/v1/users-profile/a0tysxy6wukagduank4k")
         console.log('No hay imagenes')
       }
-      const urlList = await cloudinaryUpload(req.files! as Express.Multer.File[])
 
-      console.log(urlList)
+
       //Evalua que los parametros enviado en la consulta se encunetren bien
       const validate: ResponseApi | undefined = Verified_Fields(
-        JSON.parse(body.body),
+        body,
         "createNewUser"
       );
 
@@ -50,7 +54,7 @@ export class UsersEndpoint {
       }
 
       const response: ResponseApi | undefined = await controller.createNewUser(
-        JSON.parse(body.body),
+        body,
         urlList
       );
 
@@ -121,23 +125,53 @@ export class UsersEndpoint {
     }
   }
 
-  async updateProfileEmail(req: Request, res: Response) {
+  async updateProfile(req: Request, res: Response) {
+    try {
+      const body = req.body;
+      if (req.method !== "PUT")
+        return res.status(405).json({
+          status: 405,
+          msg: "Invalid Method",
+          error: "Method is a PUT but it send a " + req.method,
+        });
+
+        const response: ResponseApi | undefined = await controller.updateUser(
+          body
+        );
+  
+        if (response!.error) return res.status(response!.status!).json(response);
+  
+        return res.status(200).json(response);
+    } catch (error) {
+      return res.sendStatus(400);
+    }
+  }
+
+  async verifyPassword(req: Request, res: Response) {
+
     try {
 
       const body = req.body;
 
-      const user = await prisma.profile.update({
-        where: {
-          userId: body.id,
-        },
-        data: {
-          password: body.email,
-        },
-      });
-      return res.status(200).json({ msg: "Estamos bien" });
+      if (req.method !== "PUT")
+        return res.status(405).json({
+          status: 405,
+          msg: "Invalid Method",
+          error: "Method is a POST but it send a " + req.method,
+        });
+
+      const response: ResponseApi | undefined = await controller.verifyPassword(
+        body
+      );
+
+      if (response!.error) return res.status(response!.status!).json(response);
+
+      return res.status(200).json(response);
+
     } catch (error) {
-      return res.sendStatus(400);
+      return res.sendStatus(500);
     }
+
   }
 
   async loginUser(req: Request, res: Response) {

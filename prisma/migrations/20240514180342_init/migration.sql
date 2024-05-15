@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "Users" (
-    "id" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
     "cellphone" TEXT NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE "Profile" (
     "password" TEXT NOT NULL,
     "address" TEXT NOT NULL,
     "image" TEXT NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "userId" TEXT NOT NULL,
     "createAtProfile" TIMESTAMP(3),
     "updateAtProfile" TIMESTAMP(3),
 
@@ -28,7 +28,7 @@ CREATE TABLE "Profile" (
 
 -- CreateTable
 CREATE TABLE "Category" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "status" BOOLEAN NOT NULL,
     "createAtProfile" TIMESTAMP(3),
@@ -39,13 +39,13 @@ CREATE TABLE "Category" (
 
 -- CreateTable
 CREATE TABLE "Product" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "material" TEXT NOT NULL,
     "size" TEXT NOT NULL,
     "shape" TEXT NOT NULL,
-    "categoryId" INTEGER NOT NULL,
+    "categoryId" TEXT NOT NULL,
     "color" TEXT NOT NULL,
     "createAtProduct" TIMESTAMP(3),
     "updateAtProduct" TIMESTAMP(3),
@@ -55,8 +55,8 @@ CREATE TABLE "Product" (
 
 -- CreateTable
 CREATE TABLE "Inventory" (
-    "id" SERIAL NOT NULL,
-    "productId" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "productId" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "image" TEXT[],
     "price" DECIMAL(65,30) NOT NULL,
@@ -72,8 +72,8 @@ CREATE TABLE "Inventory" (
 -- CreateTable
 CREATE TABLE "Favorites_Carts" (
     "id" TEXT NOT NULL,
-    "userId" INTEGER NOT NULL,
-    "productId" INTEGER NOT NULL,
+    "userId" TEXT NOT NULL,
+    "productId" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "status" BOOLEAN NOT NULL,
