@@ -9,8 +9,10 @@ router.all('/get-user', isValidated, endpoint.getUser)
 router.all('/create-user', isValidated, endpoint.createNewUser)
 router.all('/delete-user', isValidated, endpoint.deleteUser)
 
-router.all('/reset-profile-email', isValidated, validateTokenMiddleware, endpoint.updateProfileEmail)
-router.all('/reset-profile-password', isValidated, validateTokenMiddleware, endpoint.updateProfilePassword)
+router.all('/update-profile', endpoint.updateProfile)
+router.all('/reset-profile-password', endpoint.updateProfilePassword)
+router.all('/verify-password', endpoint.verifyPassword)
+
 
 router.post('/loggin-user',isValidated, endpoint.loginUser)
 router.post('/loggin-user-guest', endpoint.loginGuest)

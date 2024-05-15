@@ -1,9 +1,12 @@
 import { PrismaClient } from "@prisma/client";
-import { LoginProcess, ProfilePassword, Users } from "../interfaces/grema.interfaces";
+import { DeleteUser, LoginProcess, ProfilePassword, Users, UsersUpdate } from "../interfaces/grema.interfaces";
 import bcrypt from "bcrypt"
 import { generateToken } from "../utils/tokens/generate_token";
 import { request, Request } from "express";
 import { verifyTokenAndHeaders } from "../utils/tokens/verify_token";
+import { DateTime } from "luxon";
+import { body } from "express-validator";
+
 const prisma = new PrismaClient({});
 export class UserController {
   async getUser() {
@@ -22,8 +25,8 @@ export class UserController {
           name: _body.name,
           lastName: _body.lastName,
           cellphone: _body.cellphone,
-          createAtUsers: new Date(),
-          updateAtUsers: new Date(),
+          createAtUsers: DateTime.now().setZone('America/Mexico_City').toString(),
+          updateAtUsers: DateTime.now().setZone('America/Mexico_City').toString(),
           genre: _body.genre,
           status: true,
           profile: {
@@ -32,8 +35,8 @@ export class UserController {
               password: hashedPassword,
               address: _body.profile.address,
               image: urlList[0],
-              createAtProfile: new Date(),
-              updateAtProfile: new Date(),
+              createAtProfile: DateTime.now().setZone('America/Mexico_City').toString(),
+              updateAtProfile: DateTime.now().setZone('America/Mexico_City').toString()
             },
           },
         },
@@ -61,18 +64,61 @@ export class UserController {
       };
     }
   }
-  async updateUser() {
+  async updateUser(_body: UsersUpdate) {
     try {
-      console.log(
-        "Sirve para llamar a la base de datos o los diferents metodos para el tratamiento de informacion"
-      );
-    } catch (error) { }
+
+      const user = await prisma.users.update({
+        where: {
+          id: _body.id
+        },
+        data: {
+          cellphone: _body.phone,
+          profile: {
+            update: {
+              address: _body.address,
+              createAtProfile: DateTime.now().setZone('America/Mexico_City').toString(),
+              updateAtProfile: DateTime.now().setZone('America/Mexico_City').toString()
+            },
+          },
+        },
+        select:{
+          cellphone:true,
+          profile:{
+            select:{
+              address:true
+            }
+          }
+        }
+      })
+
+      return {
+        success: "Ok",
+        status: 201,
+        msg: "Update profile",
+        data: { user },
+      };
+    } catch (error: any) {
+      if (error.code === "P2002")
+        return {
+          status: 409,
+          msg: "Error update profile",
+          info: "",
+          error: { ...error },
+        };
+
+      return {
+        status: 400,
+        msg: "Error update profile",
+        error: { ...error },
+      };
+    }
   }
-  async deleteUser(_body: any) {
+
+  async deleteUser(_body: DeleteUser) {
     try {
       const user = await prisma.users.update({
         where: {
-          id: _body.id,
+          id: _body.id.toString()
         },
         data: {
           status: false,
@@ -81,13 +127,13 @@ export class UserController {
       return {
         success: "Ok",
         status: 200,
-        msg: "Update password in profile",
+        msg: "Delete profile",
         data: _body,
       };
     } catch (error: any) {
       return {
         status: 400,
-        msg: "Error update profile",
+        msg: "Error delete profile",
         error: { ...error },
       };
     }
@@ -100,6 +146,7 @@ export class UserController {
         },
         data: {
           password: _body.password,
+          updateAtProfile: DateTime.now().setZone('America/Mexico_City').toString()
         },
       });
       return {
@@ -124,8 +171,19 @@ export class UserController {
 
       const result = await prisma.profile.findFirst({
         where: {
-          email: _body.email,
+          AND: [
+            {
+              email: _body.email,
+            },
+            {
+              user: {
+                status: true
+              }
+            }
+
+          ]
         },
+
         select: {
           userId: true,
           password: true,
@@ -138,9 +196,9 @@ export class UserController {
           user: {
             select: {
               id: true,
-              name:true,
-              lastName:true,
-              cellphone:true,
+              name: true,
+              lastName: true,
+              cellphone: true,
 
             }
           }
@@ -173,7 +231,7 @@ export class UserController {
           email: result.email,
           address: result.address,
           phone: result.user.cellphone,
-          name: result.user.name +" "+result.user.lastName,
+          name: result.user.name + " " + result.user.lastName,
           userId: result.user.id,
           image: result.image,
           token: generateToken({
@@ -188,6 +246,66 @@ export class UserController {
       return {
         status: 400,
         msg: "Error search user",
+        error: { ...error },
+      };
+    }
+  }
+
+  async verifyPassword(_body: LoginProcess) {
+    try {
+
+
+
+      const result = await prisma.profile.findFirst({
+        where: {
+          email: _body.email,
+        },
+        select: {
+          password: true,
+          address: true,
+        },
+
+      })
+
+      if (!result) {
+        return {
+          status: 204,
+          msg: "User not found",
+        };
+      }
+
+      const verifiedPassword = await bcrypt.compare(_body.password, result.password)
+
+      if (!verifiedPassword) {
+        return {
+          status: 204,
+          msg: "Invalid password",
+        };
+      }
+
+      const finalResult = await prisma.profile.update({
+        where: {
+          email: _body.email,
+        },
+        data: {
+          password: _body.passordNew,
+          updateAtProfile: DateTime.now().setZone('America/Mexico_City').toString()
+        }
+      })
+
+      return {
+        success: "Ok",
+        status: 200,
+        msg: "Update passord",
+        data: {
+          body: _body,
+          result: finalResult
+        },
+      };
+    } catch (error: any) {
+      return {
+        status: 400,
+        msg: "Error update password",
         error: { ...error },
       };
     }

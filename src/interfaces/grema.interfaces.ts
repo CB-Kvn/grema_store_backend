@@ -1,25 +1,32 @@
 export interface Users {
-  id: number;
+  id: string;
   name: string;
   lastName: string;
   cellphone: string;
   genre: string;
-  profile:{
+  profile: {
     email: string;
     password: string;
     address: string;
     image: string
   }
-  
+
 }
-export interface Categories{
+
+export interface UsersUpdate {
+  id: string;
+  phone: string;
+  address: string;
+
+}
+export interface Categories {
   name: string
 }
 
 
 
 export interface ProfilePassword {
-  id: number;
+  id: string;
   email: string;
   password: string;
 }
@@ -27,6 +34,7 @@ export interface ProfilePassword {
 export interface LoginProcess {
   email: string;
   password: string;
+  passordNew?: string;
 }
 
 export interface ResponseApi {
@@ -79,7 +87,7 @@ export interface ProductInventory {
   price: number;
   status: boolean;
   desc: number;
-  typeDesc:string;
+  typeDesc: string;
   createAtProductInventory: Date;
   updateAtProductInventory: Date;
 }
@@ -97,8 +105,8 @@ export interface Product {
   inventory: ProductInventory; // Nested object
 }
 export interface Favorities_Cart {
-  id:string
-  userId: number
+  id: string
+  userId: string
   productId: string
   type: string
   quantyOrder: number
@@ -106,7 +114,7 @@ export interface Favorities_Cart {
 }
 
 export interface RemoveFav_Car {
-  id:string
+  id: string
 
 }
 
@@ -118,4 +126,9 @@ export interface MailInterface {
   subject: string;
   text?: string;
   html: string;
+}
+
+export interface DeleteUser {
+  id: string,
+  email: string
 }
