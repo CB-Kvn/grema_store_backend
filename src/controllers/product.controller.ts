@@ -106,6 +106,22 @@ export class ProductController {
   }
   async getAllProduct(_body: any) {
     try {
+
+      const total = await prisma.inventory.count({
+        
+        where: {
+          AND: [
+              {
+                status: true
+              }
+          ]
+
+        },
+        
+        skip: _body.skip,
+        take: _body.take
+
+      });
       const product = await prisma.inventory.findMany({
         
         where: {
@@ -144,7 +160,7 @@ export class ProductController {
         success: "Ok",
         status: 200,
         msg: "Get all product",
-        data: product,
+        data: {product,total},
       };
     } catch (error: any) {
       return {
@@ -159,12 +175,14 @@ export class ProductController {
       const product = await prisma.inventory.findMany({
 
         where: {
+          
           AND: [
             {
               product:{
                 category: {
                   status: true
                 },
+
               } 
             },
             {
@@ -236,16 +254,71 @@ export class ProductController {
           }
           
         },
+
         skip: _body.skip,
         take: _body.take
 
 
       });
+      const total = await prisma.inventory.count({
+        where: {
+          AND: [
+            {
+              product: {
+                category: {
+                  status: true
+                },
+              }
+            },
+            {
+              status: true
+            },
+            {
+              product: {
+                color: {
+                  in: _body.color
+                }
+              }
+            },
+            {
+              product: {
+                material: {
+                  in: _body.material
+                }
+              }
+            },
+            {
+              product: {
+                size: {
+                  in: _body.tam
+                }
+              }
+            },
+            {
+              product: {
+                shape: {
+                  in: _body.forma
+                }
+              }
+            },
+            {
+              product: {
+                category: {
+                  name: {
+                    in: _body.categoria
+                  }
+                }
+              }
+            },
+          ]
+        }
+      });
+
       return {
         success: "Ok",
         status: 200,
         msg: "Get all product",
-        data: product,
+        data: {product,total},
       };
     } catch (error: any) {
       return {
