@@ -152,8 +152,8 @@ export class ProductController {
             }
           }
         },
-        skip: _body.skip,
-        take: _body.take
+        skip: 0,
+        take: 10
 
       });
       return {
