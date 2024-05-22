@@ -9,7 +9,7 @@ import { FiltersControllers } from "./filters.controller";
 const prisma = new PrismaClient({});
 
 export class ProductController {
- 
+
   async createProduct(_body: Product[]) {
     try {
 
@@ -23,11 +23,11 @@ export class ProductController {
             image: element.inventory.image,
             price: element.inventory.price,
             status: true,
-            desc:element.inventory.desc,
-            typeDesc:element.inventory.typeDesc,
+            desc: element.inventory.desc,
+            typeDesc: element.inventory.typeDesc,
             createAtProductInventory: date,
             updateAtProductInventory: date,
-            
+
             product: {
               create: {
                 id: uuidv4(),
@@ -77,8 +77,8 @@ export class ProductController {
         },
         data: {
           price: _body.price,
-          desc:_body.desc,
-          typeDesc:_body.typeDesc,
+          desc: _body.desc,
+          typeDesc: _body.typeDesc,
           product: {
             update: {
               name: _body.name,
@@ -110,42 +110,42 @@ export class ProductController {
     try {
 
       const total = await prisma.inventory.count({
-        
+
         where: {
           AND: [
-              {
-                status: true
-              }
+            {
+              status: true
+            }
           ]
 
         },
 
       });
       const product = await prisma.inventory.findMany({
-        
+
         where: {
           AND: [
-              {
-                status: true
-              }
+            {
+              status: true
+            }
           ]
 
         },
         include: {
 
-          product:{
-            select:{
-              id:true,
-              name:true,
-              description:true,
-              material:true,
-              size:true,
-              shape:true,
-              color:true,
-              categoryId:true,
-              category:{
-                select:{
-                  name:true,
+          product: {
+            select: {
+              id: true,
+              name: true,
+              description: true,
+              material: true,
+              size: true,
+              shape: true,
+              color: true,
+              categoryId: true,
+              category: {
+                select: {
+                  name: true,
                 }
               }
             }
@@ -159,7 +159,7 @@ export class ProductController {
         success: "Ok",
         status: 200,
         msg: "Get all product",
-        data: {product,total},
+        data: { product, total },
       };
     } catch (error: any) {
       return {
@@ -173,36 +173,36 @@ export class ProductController {
     try {
 
       const response_color = await prisma.product.findMany({
-        distinct:['color'],
-        select:{
-            color:true,  
+        distinct: ['color'],
+        select: {
+          color: true,
         },
       });
       const response_shape = await prisma.product.findMany({
-        distinct:['shape'],
-        select:{
-            shape:true,  
+        distinct: ['shape'],
+        select: {
+          shape: true,
         },
       });
       const response_material = await prisma.product.findMany({
-        distinct:['material'],
-        select:{
-            material:true,  
+        distinct: ['material'],
+        select: {
+          material: true,
         },
       });
       const response_size = await prisma.product.findMany({
-        distinct:['size'],
-        select:{
-            size:true,  
+        distinct: ['size'],
+        select: {
+          size: true,
         },
       });
       const response_category = await prisma.category.findMany({
-        distinct:['name'],
-        where:{
-            status:true
+        distinct: ['name'],
+        where: {
+          status: true
         },
-        select:{
-            name:true
+        select: {
+          name: true
         }
       })
 
@@ -213,99 +213,99 @@ export class ProductController {
       const categoria = response_category.map((c) => c.name);
 
 
-  
-    
-    const body = {
-      skip: _body.skip,
-      take: _body.take,
-      color: _body.color.length >  0 ? _body.color : color,
-      tam: _body.tam.length >  0 ?  _body.tam : size,
-      forma: _body.forma.length > 0 ?  _body.forma : shape,
-      material: _body.material.length >  0 ? _body.material : material,
-      categoria: _body.categoria.length > 0 ? _body.categoria :  categoria  
-    };
-      
+
+
+      const body = {
+        skip: _body.skip,
+        take: _body.take,
+        color: _body.color.length > 0 ? _body.color : color,
+        tam: _body.tam.length > 0 ? _body.tam : size,
+        forma: _body.forma.length > 0 ? _body.forma : shape,
+        material: _body.material.length > 0 ? _body.material : material,
+        categoria: _body.categoria.length > 0 ? _body.categoria : categoria
+      };
+
       const product = await prisma.inventory.findMany({
 
         where: {
-          
+
           AND: [
             {
-              product:{
+              product: {
                 category: {
                   status: true
                 },
 
-              } 
+              }
             },
             {
-             status: true
+              status: true
             },
             {
-              product:{
+              product: {
                 color: {
                   in: body.color
                 }
               }
             },
             {
-              product:{
+              product: {
                 material: {
                   in: body.material
                 }
               }
-              
+
             },
             {
-              product:{
+              product: {
                 size: {
                   in: body.tam
                 }
               }
-              
+
             },
             {
-              product:{
+              product: {
                 shape: {
                   in: body.forma
                 }
               }
-              
+
             },
             {
-              product:{
+              product: {
                 category: {
                   name: {
                     in: body.categoria
                   }
-  
+
                 },
               }
-              
+
             },
           ]
 
         },
         include: {
-          product:{
-            select:{
-              category:{
-                select:{
-                  name:true
+          product: {
+            select: {
+              category: {
+                select: {
+                  name: true
                 }
               },
-              name:true,
-              description:true,
-              material:true,
-              size:true,
-              color:true,
-              shape:true,
+              name: true,
+              description: true,
+              material: true,
+              size: true,
+              color: true,
+              shape: true,
 
-              
+
             }
-            
+
           }
-          
+
         },
 
         skip: body.skip,
@@ -371,7 +371,7 @@ export class ProductController {
         success: "Ok",
         status: 200,
         msg: "Get all product",
-        data: {product,total},
+        data: { product, total },
       };
     } catch (error: any) {
       return {
