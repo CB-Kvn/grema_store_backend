@@ -78,7 +78,7 @@ export class Product {
     async getAllProduct (req: Request, res: Response) {
       try {
         const body = req.body;
-        if (req.method !== "GET")
+        if (req.method !== "POST")
           return res.status(405).json({
             status: 405,
             msg: "Invalid Method",

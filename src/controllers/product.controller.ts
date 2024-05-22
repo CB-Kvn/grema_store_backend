@@ -4,8 +4,10 @@ import bcrypt from "bcrypt"
 import { generateToken } from "../utils/tokens/generate_token";
 import { DateTime } from "luxon";
 import { v4 as uuidv4 } from 'uuid';
+import { FiltersControllers } from "./filters.controller";
 
 const prisma = new PrismaClient({});
+
 export class ProductController {
  
   async createProduct(_body: Product[]) {
@@ -117,9 +119,6 @@ export class ProductController {
           ]
 
         },
-        
-        skip: _body.skip,
-        take: _body.take
 
       });
       const product = await prisma.inventory.findMany({
@@ -152,8 +151,8 @@ export class ProductController {
             }
           }
         },
-        skip: 0,
-        take: 10
+        skip: _body.skip,
+        take: _body.take
 
       });
       return {
@@ -172,6 +171,60 @@ export class ProductController {
   }
   async getAllFilters(_body: any) {
     try {
+
+      const response_color = await prisma.product.findMany({
+        distinct:['color'],
+        select:{
+            color:true,  
+        },
+      });
+      const response_shape = await prisma.product.findMany({
+        distinct:['shape'],
+        select:{
+            shape:true,  
+        },
+      });
+      const response_material = await prisma.product.findMany({
+        distinct:['material'],
+        select:{
+            material:true,  
+        },
+      });
+      const response_size = await prisma.product.findMany({
+        distinct:['size'],
+        select:{
+            size:true,  
+        },
+      });
+      const response_category = await prisma.category.findMany({
+        distinct:['name'],
+        where:{
+            status:true
+        },
+        select:{
+            name:true
+        }
+      })
+
+      const color = response_color.map((c) => c.color);
+      const size = response_size.map((c) => c.size);
+      const shape = response_shape.map((c) => c.shape);
+      const material = response_material.map((c) => c.material);
+      const categoria = response_category.map((c) => c.name);
+
+
+  
+    
+    const body = {
+      skip: _body.skip,
+      take: _body.take,
+      color: _body.color.length >  0 ? _body.color : color,
+      tam: _body.tam.length >  0 ?  _body.tam : size,
+      forma: _body.forma.length > 0 ?  _body.forma : shape,
+      material: _body.material.length >  0 ? _body.material : material,
+      categoria: _body.categoria.length > 0 ? _body.categoria :  categoria  
+    };
+      
       const product = await prisma.inventory.findMany({
 
         where: {
@@ -191,14 +244,14 @@ export class ProductController {
             {
               product:{
                 color: {
-                  in: _body.color
+                  in: body.color
                 }
               }
             },
             {
               product:{
                 material: {
-                  in: _body.material
+                  in: body.material
                 }
               }
               
@@ -206,7 +259,7 @@ export class ProductController {
             {
               product:{
                 size: {
-                  in: _body.tam
+                  in: body.tam
                 }
               }
               
@@ -214,7 +267,7 @@ export class ProductController {
             {
               product:{
                 shape: {
-                  in: _body.forma
+                  in: body.forma
                 }
               }
               
@@ -223,7 +276,7 @@ export class ProductController {
               product:{
                 category: {
                   name: {
-                    in: _body.categoria
+                    in: body.categoria
                   }
   
                 },
@@ -255,8 +308,8 @@ export class ProductController {
           
         },
 
-        skip: _body.skip,
-        take: _body.take
+        skip: body.skip,
+        take: body.take
 
 
       });
@@ -276,28 +329,28 @@ export class ProductController {
             {
               product: {
                 color: {
-                  in: _body.color
+                  in: body.color
                 }
               }
             },
             {
               product: {
                 material: {
-                  in: _body.material
+                  in: body.material
                 }
               }
             },
             {
               product: {
                 size: {
-                  in: _body.tam
+                  in: body.tam
                 }
               }
             },
             {
               product: {
                 shape: {
-                  in: _body.forma
+                  in: body.forma
                 }
               }
             },
@@ -305,7 +358,7 @@ export class ProductController {
               product: {
                 category: {
                   name: {
-                    in: _body.categoria
+                    in: body.categoria
                   }
                 }
               }
