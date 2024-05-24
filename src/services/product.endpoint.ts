@@ -114,6 +114,27 @@ export class Product {
       }
     }
 
+    async getUniqueProduct (req: Request, res: Response) {
+      try {
+        const { id } = req.params;
+
+        if (req.method !== "GET")
+          return res.status(405).json({
+            status: 405,
+            msg: "Invalid Method",
+            error: "Method is a PUT but it send a " + req.method,
+          });
+
+        const response: ResponseApi = await controller.getUniqueProduct(id);
+  
+        if (response!.error) return res.status(response!.status!).json(response);
+  
+        return res.status(200).json(response);
+      } catch (error) {
+        return res.status(500).json({ error: 'An error occurred while fetching inventory' });
+      }
+    }
+
 
   
 }
