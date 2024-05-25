@@ -118,6 +118,8 @@ export class Product {
       try {
         const { id } = req.params;
 
+        console.log(id)
+
         if (req.method !== "GET")
           return res.status(405).json({
             status: 405,
