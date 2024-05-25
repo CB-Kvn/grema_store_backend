@@ -381,6 +381,39 @@ export class ProductController {
       };
     }
   }
+  async getUniqueProduct(id:string) {
+    try {
+
+      const product = await prisma.inventory.findUnique({
+        where: { id },
+        include: {
+          product: true,
+        },
+      });
+
+      if (!product) {
+        return {
+          success: "Ok",
+          status: 404,
+          error: 'Inventory not found',
+          msg: 'Inventory not found',
+        };
+      }
+
+      return {
+        success: "Ok",
+        status: 200,
+        msg: "Get all product",
+        data: { product },
+      };
+    } catch (error: any) {
+      return {
+        status: 400,
+        msg: "Error Get all product",
+        error: { ...error },
+      };
+    }
+  }
 
 
 
