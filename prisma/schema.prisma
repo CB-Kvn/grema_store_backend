@@ -11,85 +11,106 @@ datasource db {
 }
 
 model Users {
-  id String @id
-  name String
-  lastName String
-  cellphone String
-  genre String
-  profile Profile?
-  favorites Favorites_Carts[]
+  id            String            @id
+  name          String
+  lastName      String
+  cellphone     String
+  genre         String
+  profile       Profile?
+  favorites     Favorites_Carts[]
   createAtUsers DateTime?
   updateAtUsers DateTime?
-  status Boolean
+  status        Boolean
+  invoices Invoice[]
 }
+
 model Profile {
-  id Int @id @default(autoincrement())
-  email String @unique
-  password String
-  address String
-  image String
-  user Users @relation(fields: [userId], references: [id])
-  userId String @unique
-  createAtProfile DateTime?
-  updateAtProfile DateTime?
-
-}
-
-
-model Category{
-  id String @id
-  name String
-  products Product[]
-  status Boolean
+  id              Int       @id @default(autoincrement())
+  email           String    @unique
+  password        String
+  address         String
+  image           String
+  user            Users     @relation(fields: [userId], references: [id])
+  userId          String    @unique
   createAtProfile DateTime?
   updateAtProfile DateTime?
 }
+
+model Category {
+  id              String    @id
+  name            String
+  products        Product[]
+  status          Boolean
+  createAtProfile DateTime?
+  updateAtProfile DateTime?
+}
+
 model Product {
-  id String @id 
-  name String
-  description String
-  material String
-  size String
-  shape String
-  category Category @relation(fields: [categoryId], references: [id])
-  categoryId String
-  favorites Favorites_Carts[]
-  product Inventory[]
-  color String
+  id              String            @id
+  name            String
+  description     String
+  material        String
+  size            String
+  shape           String
+  category        Category          @relation(fields: [categoryId], references: [id])
+  categoryId      String
+  favorites       Favorites_Carts[]
+  product         Inventory[]
+  color           String
   createAtProduct DateTime?
-  updateAtProduct  DateTime?
+  updateAtProduct DateTime?
+  InvoiceDetail   InvoiceDetail[]
 }
 
 model Inventory {
-  id String @id
-  product Product @relation(fields: [productId], references: [id])
-  productId String
-  quantity Int
-  image String[]
-  price Decimal
-  status Boolean
-  typeDesc String
-  desc Int 
-  createAtProductInventory DateTime? 
+  id                       String    @id
+  product                  Product   @relation(fields: [productId], references: [id])
+  productId                String
+  quantity                 Int
+  image                    String[]
+  price                    Decimal
+  status                   Boolean
+  typeDesc                 String
+  desc                     Int
+  createAtProductInventory DateTime?
   updateAtProductInventory DateTime?
 }
 
 model Favorites_Carts {
-  id String @id @unique
-  user Users @relation(fields: [userId], references: [id])
-  userId String
-  product Product @relation(fields: [productId], references: [id])
-  productId String 
-  type String
-  quantity Int
-  status Boolean
+  id        String  @id @unique
+  user      Users   @relation(fields: [userId], references: [id])
+  userId    String
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+  type      String
+  quantity  Int
+  status    Boolean
 }
 
+model Invoice {
+  id              String          @id
+  invoiceNumber   String
+  amount          Float
+  user            Users           @relation(fields: [userId], references: [id])
+  userId          String
+  tax             Float
+  shipping        Float
+  details         InvoiceDetail[]
+  pdf             String
+  status             String
+  createAtInvoice DateTime?
+  updateAtInvoice DateTime?
+}
 
-
-
-
-
-
-
-
+model InvoiceDetail {
+  id                    String    @id
+  invoice               Invoice   @relation(fields: [invoiceId], references: [id])
+  invoiceId             String
+  product               Product   @relation(fields: [productId], references: [id])
+  productId             String
+  quantity              Int
+  price                 Float
+  status                String
+  createAtInvoiceDetail DateTime?
+  updateAtInvoiceDetail DateTime?
+}

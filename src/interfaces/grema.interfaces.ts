@@ -1,3 +1,5 @@
+
+
 export interface Users {
   id: string;
   name: string;
@@ -131,4 +133,27 @@ export interface MailInterface {
 export interface DeleteUser {
   id: string,
   email: string
+}
+
+export interface Orders {
+  invoiceNumber:   string,
+  amount:          number
+  userId:          string,
+  tax:             number,
+  shipping:        number,
+  details:         InvoiceDetail[],
+  pdf:             string,
+  status:             string,
+  createAtInvoice: string,
+  updateAtInvoice: string
+}
+
+export interface InvoiceDetail {
+  id:                      string,
+  invoiceId:               string, 
+  quantity:                number,
+  price:                   number,
+  status:                  string,
+  createAtInvoiceDetail:   string,
+  updateAtInvoiceDetail:   string
 }
