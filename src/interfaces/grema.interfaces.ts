@@ -149,7 +149,6 @@ export interface Orders {
 }
 
 export interface InvoiceDetail {
-  id:                      string,
   invoiceId:               string, 
   quantity:                number,
   price:                   number,

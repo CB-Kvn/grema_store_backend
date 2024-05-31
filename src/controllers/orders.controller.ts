@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient({});
 
 export class OrdersControllers {
-    async Orders() {
+    async Orders(body:any) {
         try {
           const color = await prisma.product.findMany({
             distinct:['color'],

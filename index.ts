@@ -7,13 +7,13 @@ import cors from 'cors';
 import dotenv from 'dotenv'; 
 import path from 'path'
 
-import { router as userRoutes } from './routes/user.routes'
-import { router as categoryRoutes } from './routes/category.routes'
-import { router as productRoutes } from './routes/product.routes'
-import { router as filterstRoutes } from './routes/filters.routes'
-import { router as favorities } from './routes/favorites.routes'
-import { router as shopping } from './routes/shoppinCar.routes'
-import { router as emails } from './routes/sendEmails.routes'
+import { router as userRoutes } from './src/routes/user.routes'
+import { router as categoryRoutes } from './src/routes/category.routes'
+import { router as productRoutes } from './src/routes/product.routes'
+import { router as filterstRoutes } from './src/routes/filters.routes'
+import { router as favorities } from './src/routes/favorites.routes'
+import { router as shopping } from './src/routes/shoppinCar.routes'
+import { router as emails } from './src/routes/sendEmails.routes'
 
 import multer from "multer";
 
