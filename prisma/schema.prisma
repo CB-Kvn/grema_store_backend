@@ -90,14 +90,21 @@ model Favorites_Carts {
 
 model Invoice {
   id              String          @id
+  orderNumber     String
   invoiceNumber   String
-  amount          Float
+  amount          Decimal
   user            Users           @relation(fields: [userId], references: [id])
   userId          String
-  tax             Float
-  shipping        Float
+  name            String?
+  idGues          String?
+  phone           String?
+  address         String?
+  typeUser        String
+  tax             Decimal
+  typeShipping        Decimal
+  shipping        Decimal
   details         InvoiceDetail[]
-  pdf             String
+  pdf             String?
   status             String
   createAtInvoice DateTime?
   updateAtInvoice DateTime?
@@ -105,12 +112,13 @@ model Invoice {
 
 model InvoiceDetail {
   id                    String    @id
-  invoice               Invoice   @relation(fields: [invoiceId], references: [id])
-  invoiceId             String
+  order                 Invoice   @relation(fields: [orderNumber], references: [id])
+  orderNumber           String
+  invoiceId             String?
   product               Product   @relation(fields: [productId], references: [id])
   productId             String
   quantity              Int
-  price                 Float
+  price                 Decimal
   status                String
   createAtInvoiceDetail DateTime?
   updateAtInvoiceDetail DateTime?
