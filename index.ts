@@ -14,6 +14,7 @@ import { router as filterstRoutes } from './src/routes/filters.routes'
 import { router as favorities } from './src/routes/favorites.routes'
 import { router as shopping } from './src/routes/shoppinCar.routes'
 import { router as emails } from './src/routes/sendEmails.routes'
+import { router as orders } from './src/routes/orders.routes'
 
 import multer from "multer";
 
@@ -31,16 +32,29 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json({ limit: '200mb' }));
 
-const storage = multer.diskStorage({
-      destination: path.join(__dirname, 'public/img/uploads'),
-      filename: function (req, file, cb) {
-        cb(null, `${Date.now()}-${file.originalname}`);
-      }
-    });
+// const storage = multer.diskStorage({
+//       destination: path.join(__dirname, 'public/img/uploads'),
+//       filename: function (req, file, cb) {
+//         cb(null, `${Date.now()}-${file.originalname}`);
+//       }
+//     });
 
-app.use(multer({storage}).array('images'));
+// app.use(multer({storage}).array('images'));
 
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
+
+
+// const storage = multer.diskStorage({
+//     destination: path.join(__dirname, 'public/img/uploads'),
+//     filename: function (req, file, cb) {
+//       cb(null, `${Date.now()}-${file.originalname}`);
+//     }
+//   });
+
+// app.use(multer({storage}).array('archives'));
+
+// app.use(express.static(path.join(__dirname, 'public')));
+
 
 let url_base = process.env.URL_API
 console.log(url_base)
@@ -50,7 +64,7 @@ app.use(url_base + 'product/', productRoutes)
 app.use(url_base + 'filters/', filterstRoutes)
 app.use(url_base + 'favorities/', favorities)
 app.use(url_base + 'shopping/', shopping)
-app.use(url_base + 'email/', emails)
+app.use(url_base + 'orders/', orders)
 
 const server = http.createServer(app);
 

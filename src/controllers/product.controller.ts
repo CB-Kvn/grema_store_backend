@@ -106,69 +106,6 @@ export class ProductController {
       };
     }
   }
-  async getAllProduct(_body: any) {
-    try {
-
-      const total = await prisma.inventory.count({
-
-        where: {
-          AND: [
-            {
-              status: true
-            }
-          ]
-
-        },
-
-      });
-      const product = await prisma.inventory.findMany({
-
-        where: {
-          AND: [
-            {
-              status: true
-            }
-          ]
-
-        },
-        include: {
-
-          product: {
-            select: {
-              id: true,
-              name: true,
-              description: true,
-              material: true,
-              size: true,
-              shape: true,
-              color: true,
-              categoryId: true,
-              category: {
-                select: {
-                  name: true,
-                }
-              }
-            }
-          }
-        },
-        skip: _body.skip,
-        take: _body.take
-
-      });
-      return {
-        success: "Ok",
-        status: 200,
-        msg: "Get all product",
-        data: { product, total },
-      };
-    } catch (error: any) {
-      return {
-        status: 400,
-        msg: "Error Get all product",
-        error: { ...error },
-      };
-    }
-  }
   async getAllFilters(_body: any) {
     try {
 
@@ -192,6 +129,7 @@ export class ProductController {
       });
       const response_size = await prisma.product.findMany({
         distinct: ['size'],
+        
         select: {
           size: true,
         },
@@ -225,147 +163,306 @@ export class ProductController {
         categoria: _body.categoria.length > 0 ? _body.categoria : categoria
       };
 
-      const product = await prisma.inventory.findMany({
+      let total:number
+      let product:any
 
-        where: {
+      if(_body.descuento[0] === "descuento" && _body.descuento.length != 0 ){
+        product = await prisma.inventory.findMany({
 
-          AND: [
-            {
-              product: {
-                category: {
-                  status: true
-                },
-
-              }
-            },
-            {
-              status: true
-            },
-            {
-              product: {
-                color: {
-                  in: body.color
-                }
-              }
-            },
-            {
-              product: {
-                material: {
-                  in: body.material
-                }
-              }
-
-            },
-            {
-              product: {
-                size: {
-                  in: body.tam
-                }
-              }
-
-            },
-            {
-              product: {
-                shape: {
-                  in: body.forma
-                }
-              }
-
-            },
-            {
-              product: {
-                category: {
-                  name: {
-                    in: body.categoria
-                  }
-
-                },
-              }
-
-            },
-          ]
-
-        },
-        include: {
-          product: {
-            select: {
-              category: {
-                select: {
-                  name: true
+          where: {
+  
+            AND: [
+              {
+                product: {
+                  category: {
+                    status: true
+                  },
+  
                 }
               },
-              name: true,
-              description: true,
-              material: true,
-              size: true,
-              color: true,
-              shape: true,
-
-
-            }
-
-          }
-
-        },
-
-        skip: body.skip,
-        take: body.take
-
-
-      });
-      const total = await prisma.inventory.count({
-        where: {
-          AND: [
-            {
-              product: {
-                category: {
-                  status: true
-                },
-              }
-            },
-            {
-              status: true
-            },
-            {
-              product: {
-                color: {
-                  in: body.color
-                }
-              }
-            },
-            {
-              product: {
-                material: {
-                  in: body.material
-                }
-              }
-            },
-            {
-              product: {
-                size: {
-                  in: body.tam
-                }
-              }
-            },
-            {
-              product: {
-                shape: {
-                  in: body.forma
-                }
-              }
-            },
-            {
-              product: {
-                category: {
-                  name: {
-                    in: body.categoria
+              {
+                status: true
+              },
+              {
+                product: {
+                  color: {
+                    in: body.color
                   }
                 }
+              },
+              {
+                product: {
+                  material: {
+                    in: body.material
+                  }
+                }
+  
+              },
+              {
+                product: {
+                  size: {
+                    in: body.tam
+                  }
+                }
+  
+              },
+              {
+                product: {
+                  shape: {
+                    in: body.forma
+                  }
+                }
+  
+              },
+              {
+                product: {
+                  category: {
+                    name: {
+                      in: body.categoria
+                    }
+  
+                  },
+                }
+  
+              },
+              {
+                desc: {
+                  gt: 0
+                }
               }
-            },
-          ]
-        }
-      });
+            ]
+  
+          },
+          include: {
+            product: {
+              select: {
+                category: {
+                  select: {
+                    name: true
+                  }
+                },
+                name: true,
+                description: true,
+                material: true,
+                size: true,
+                color: true,
+                shape: true,
+  
+  
+              }
+  
+            }
+  
+          },
+  
+          skip: body.skip,
+          take: body.take
+  
+  
+        });
+        total = await prisma.inventory.count({
+          where: {
+            AND: [
+              {
+                product: {
+                  category: {
+                    status: true
+                  },
+                }
+              },
+              {
+                status: true
+              },
+              {
+                product: {
+                  color: {
+                    in: body.color
+                  }
+                }
+              },
+              {
+                product: {
+                  material: {
+                    in: body.material
+                  }
+                }
+              },
+              {
+                product: {
+                  size: {
+                    in: body.tam
+                  }
+                }
+              },
+              {
+                product: {
+                  shape: {
+                    in: body.forma
+                  }
+                }
+              },
+              {
+                product: {
+                  category: {
+                    name: {
+                      in: body.categoria
+                    }
+                  }
+                }
+              },
+              {
+                desc: {
+                  gt: 0
+                }
+              }
+            ]
+          }
+        });
+      }else{
+        product = await prisma.inventory.findMany({
+
+          where: {
+  
+            AND: [
+              {
+                product: {
+                  category: {
+                    status: true
+                  },
+  
+                }
+              },
+              {
+                status: true
+              },
+              {
+                product: {
+                  color: {
+                    in: body.color
+                  }
+                }
+              },
+              {
+                product: {
+                  material: {
+                    in: body.material
+                  }
+                }
+  
+              },
+              {
+                product: {
+                  size: {
+                    in: body.tam
+                  }
+                }
+  
+              },
+              {
+                product: {
+                  shape: {
+                    in: body.forma
+                  }
+                }
+  
+              },
+              {
+                product: {
+                  category: {
+                    name: {
+                      in: body.categoria
+                    }
+  
+                  },
+                }
+  
+              },
+            ]
+  
+          },
+          include: {
+            product: {
+              select: {
+                category: {
+                  select: {
+                    name: true
+                  }
+                },
+                name: true,
+                description: true,
+                material: true,
+                size: true,
+                color: true,
+                shape: true,
+  
+  
+              }
+  
+            }
+  
+          },
+  
+          skip: body.skip,
+          take: body.take
+  
+  
+        });
+        total = await prisma.inventory.count({
+          where: {
+            AND: [
+              {
+                product: {
+                  category: {
+                    status: true
+                  },
+                }
+              },
+              {
+                status: true
+              },
+              {
+                product: {
+                  color: {
+                    in: body.color
+                  }
+                }
+              },
+              {
+                product: {
+                  material: {
+                    in: body.material
+                  }
+                }
+              },
+              {
+                product: {
+                  size: {
+                    in: body.tam
+                  }
+                }
+              },
+              {
+                product: {
+                  shape: {
+                    in: body.forma
+                  }
+                }
+              },
+              {
+                product: {
+                  category: {
+                    name: {
+                      in: body.categoria
+                    }
+                  }
+                }
+              },
+            ]
+          }
+        });
+      }
+      
+      
 
       return {
         success: "Ok",
@@ -405,6 +502,199 @@ export class ProductController {
         status: 200,
         msg: "Get all product",
         data: { product },
+      };
+    } catch (error: any) {
+      return {
+        status: 400,
+        msg: "Error Get all product",
+        error: { ...error },
+      };
+    }
+  }
+  async getAlternatives() {
+    try {
+
+      const anillos = await prisma.inventory.findMany({
+        where:{
+          AND:[
+            {
+              product:{
+                category:{
+                  name:"Anillos"
+                }
+              }
+            },
+            {
+              status:true
+            }
+          ]
+        },
+        include:{
+          product:{
+            select:{
+              color:true,
+              name:true,
+              description:true,
+              material:true,
+              shape:true,
+              size:true              
+            }
+          }
+        },
+        orderBy:{
+          product:{
+            name:"desc"
+          }          
+        },
+        skip:0,
+        take:5        
+      })
+      const pulseras = await prisma.inventory.findMany({
+        where:{
+          AND:[
+            {
+              product:{
+                category:{
+                  name:"Pulseras"
+                }
+              }
+            },
+            {
+              status:true
+            }
+          ]
+        },
+        include:{
+          product:{
+            select:{
+              color:true,
+              name:true,
+              description:true,
+              material:true,
+              shape:true,
+              size:true              
+            }
+          }
+        },
+        orderBy:{
+          product:{
+            name:"desc"
+          }          
+        },
+        skip:0,
+        take:5        
+      })
+      const collares = await prisma.inventory.findMany({
+        where:{
+          AND:[
+            {
+              product:{
+                category:{
+                  name:"Collares"
+                }
+              }
+            },
+            {
+              status:true
+            }
+          ]
+        },
+        include:{
+          product:{
+            select:{
+              color:true,
+              name:true,
+              description:true,
+              material:true,
+              shape:true,
+              size:true              
+            }
+          }
+        },
+        orderBy:{
+          product:{
+            name:"desc"
+          }          
+        },
+        skip:0,
+        take:5        
+      })
+      const aretes = await prisma.inventory.findMany({
+        where:{
+          AND:[
+            {
+              product:{
+                category:{
+                  name:"Aretes"
+                }
+              }
+            },
+            {
+              status:true
+            }
+          ]
+        },
+        include:{
+          product:{
+            select:{
+              color:true,
+              name:true,
+              description:true,
+              material:true,
+              shape:true,
+              size:true              
+            }
+          }
+        },
+        orderBy:{
+          product:{
+            name:"desc"
+          }          
+        },
+        skip:0,
+        take:5        
+      })
+      const sets = await prisma.inventory.findMany({
+        where:{
+          AND:[
+            {
+              product:{
+                category:{
+                  name:"Sets"
+                }
+              }
+            },
+            {
+              status:true
+            }
+          ]
+        },
+        include:{
+          product:{
+            select:{
+              color:true,
+              name:true,
+              description:true,
+              material:true,
+              shape:true,
+              size:true              
+            }
+          }
+        },
+        orderBy:{
+          product:{
+            name:"desc"
+          }          
+        },
+        skip:0,
+        take:5        
+      })
+
+      return {
+        success: "Ok",
+        status: 200,
+        msg: "Get all product",
+        data: { anillos, pulseras,collares,aretes,sets },
       };
     } catch (error: any) {
       return {

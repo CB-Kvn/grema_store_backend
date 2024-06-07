@@ -2,6 +2,7 @@ import { Response, Request } from "express";
 import { FiltersControllers } from "../controllers/filters.controller";
 import { SendEmailController } from "../controllers/sendMail.controller";
 import { confirmationNecesary } from "../templates/confirmationNecesary";
+import { messageToClient } from "../templates/messageToClient";
 
 
 const controller = new SendEmailController()
@@ -17,12 +18,21 @@ export class SendEmail {
                     error: "Method is a PUT but it send a " + req.method,
                 });
 
-            const emailTemplate = confirmationNecesary()
+                
+
+            let emailTemplate
+
+            if (req.body.type === "msgToClient") {
+                emailTemplate = messageToClient(req.body.text)
+            } else {
+                emailTemplate = confirmationNecesary()
+             }
+                
 
             const _body = {
                 to: req.body.to,
                 subject: req.body.subject,
-                text:req.body.text,
+                text: req.body.text,
                 html: emailTemplate.html,
             }
 

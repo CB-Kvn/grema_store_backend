@@ -75,25 +75,6 @@ export class Product {
     //     return res.sendStatus(500);
     //   }
     // }
-    async getAllProduct (req: Request, res: Response) {
-      try {
-        const body = req.body;
-        if (req.method !== "POST")
-          return res.status(405).json({
-            status: 405,
-            msg: "Invalid Method",
-            error: "Method is a PUT but it send a " + req.method,
-          });
-
-        const response: ResponseApi = await controller.getAllProduct(body);
-  
-        if (response!.error) return res.status(response!.status!).json(response);
-  
-        return res.status(200).json(response);
-      } catch (error) {
-        return res.sendStatus(500);
-      }
-    }
     async getAllFilters (req: Request, res: Response) {
       try {
         const body = req.body;
@@ -101,7 +82,7 @@ export class Product {
           return res.status(405).json({
             status: 405,
             msg: "Invalid Method",
-            error: "Method is a PUT but it send a " + req.method,
+            error: "Method is a POST but it send a " + req.method,
           });
 
         const response: ResponseApi = await controller.getAllFilters(body);
@@ -113,7 +94,6 @@ export class Product {
         return res.sendStatus(500);
       }
     }
-
     async getUniqueProduct (req: Request, res: Response) {
       try {
         const { id } = req.params;
@@ -136,6 +116,25 @@ export class Product {
         return res.status(500).json({ error: 'An error occurred while fetching inventory' });
       }
     }
+    async getShowProducts (req: Request, res: Response) {
+      try {
+        if (req.method !== "GET")
+          return res.status(405).json({
+            status: 405,
+            msg: "Invalid Method",
+            error: "Method is a GET but it send a " + req.method,
+          });
+
+        const response: ResponseApi = await controller.getAlternatives()
+  
+        if (response!.error) return res.status(response!.status!).json(response);
+  
+        return res.status(200).json(response);
+      } catch (error) {
+        return res.status(500).json({ error: 'An error occurred while fetching inventory' });
+      }
+    }
+
 
 
   
