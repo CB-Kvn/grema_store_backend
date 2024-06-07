@@ -1,57 +1,50 @@
 import { PrismaClient } from "@prisma/client";
+import { Invoice,InvoiceDetail } from "../interfaces/grema.interfaces";
 
 const prisma = new PrismaClient({});
 
 export class OrdersControllers {
-  async Orders(body: any) {
+  async Orders(body: Invoice) {
     try {
-      const color = await prisma.product.findMany({
-        distinct: ['color'],
-        select: {
-          color: true,
-        },
-      });
-      const shape = await prisma.product.findMany({
-        distinct: ['shape'],
-        select: {
-          shape: true,
-        },
-      });
-      const material = await prisma.product.findMany({
-        distinct: ['material'],
-        select: {
-          material: true,
-        },
-      });
-      const size = await prisma.product.findMany({
-        distinct: ['size'],
-        select: {
-          size: true,
-        },
-      });
-
-      const category = await prisma.category.findMany({
-        distinct: ['name'],
-        where: {
-          status: true
-        },
-        select: {
-          name: true
+      
+      const invoice = await prisma.invoice.create({
+        data: {
+          orderNumber:body.orderNumber,
+          amount:body.amount,
+          userId:body.userId,
+          name:body.name,
+          idGues:body.idGues,
+          phone:body.phone,
+          email:body.email,
+          address:body.address,
+          typeUser:body.typeUser,
+          tax:body.tax,
+          typeShipping:body.typeShipping,
+          shipping:body.shipping,
+          status:"recibida",
+          details: {
+            create: body.details.map(detail => ({
+              orderNumber:body.orderNumber,
+              productId: detail.productId,
+              quantity: detail.quantity,
+              price: detail.price,
+              status: "solicitado"
+            }))
+          }
         }
+        
       });
-
-
 
       return {
         success: "Ok",
         status: 200,
-        msg: "Get all filters",
-        data: { color, shape, size, material, category },
+        msg: "Create order sucessfully",
+        data: {  },
       };
     } catch (error: any) {
       return {
         status: 400,
-        msg: "Error Get all filters",
+        msg: "Error create order",
         error: { ...error },
       };
     }

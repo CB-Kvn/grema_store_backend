@@ -12,7 +12,7 @@ export class Orders {
                 return res.status(405).json({
                     status: 405,
                     msg: "Invalid Method",
-                    error: "Method is a PUT but it send a " + req.method,
+                    error: "Method is a POST but it send a " + req.method,
                 });
 
             const response: any = await controller.Orders(req.body);

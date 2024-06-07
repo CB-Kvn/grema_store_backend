@@ -9,10 +9,14 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, 'public/img/uploads')); // Ajusta el directorio según sea necesario
   },
-  filename: (req, file, cb) => {
-    const order = req.body.orderId
-    const nameArchive = `${order}-${file.originalname}`
-
+  filename: (req:Request, file, cb) => {
+    const body = JSON.parse(JSON.stringify(req.body))
+    const nameArchive = `${Date.now}-${file.originalname}`
+    
+    req.body = {
+      ...req.body ,
+      nameArchive
+    }
     
     cb(null,nameArchive );
   }
