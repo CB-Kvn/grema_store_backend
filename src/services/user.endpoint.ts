@@ -19,7 +19,7 @@ export class UsersEndpoint {
   }
   async createNewUser(req: Request, res: Response) {
     try {
-      const body = JSON.parse(JSON.stringify(req.body));
+      const body = JSON.parse(JSON.parse(JSON.stringify(req.body.body)));
 
       if (req.method !== "POST")
         return res.status(405).json({
@@ -39,7 +39,7 @@ export class UsersEndpoint {
       }
 
 
-      //Evalua que los parametros enviado en la consulta se encunetren bien
+      // Evalua que los parametros enviado en la consulta se encunetren bien
       const validate: ResponseApi | undefined = Verified_Fields(
         body,
         "createNewUser"

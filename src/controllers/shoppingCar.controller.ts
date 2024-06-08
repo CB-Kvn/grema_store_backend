@@ -1,10 +1,10 @@
 import { PrismaClient } from "@prisma/client";
-import { Favorities_Cart, RemoveFav_Car } from "../interfaces/grema.interfaces";
+import { Favorities_Cart, RemoveFav_Car, Shopping_Cart } from "../interfaces/grema.interfaces";
 
 const prisma = new PrismaClient({});
 
 export class ShoppingController {
-    async addShoppingController(_body: Favorities_Cart) {
+    async addShoppingController(_body: Shopping_Cart) {
         try {
 
             const favorites = await prisma.favorites_Carts.create({
@@ -13,7 +13,7 @@ export class ShoppingController {
                     userId: _body.userId,
                     quantity: _body.quantyOrder,
                     type: _body.type,
-                    productId: _body.productId,
+                    inventoryId: _body.inventoryId,
                     status: true
                 },
             });
@@ -59,44 +59,44 @@ export class ShoppingController {
           };
         }
       }
-    async getFavorities(_body: Favorities_Cart) {
-        try {
+    // async getFavorities(_body: Favorities_Cart) {
+    //     try {
 
-            const favorities = await prisma.favorites_Carts.findMany({
-                where: {
-                    userId: _body.userId,
-                    status: true
-                },
-                include: {
-                    product: {
-                        select: {
-                            name: true,
-                            product: {
-                                select: {
-                                    image: true,
-                                    price: true,
-                                    desc: true
-                                }
-                            }
-                        }
-                    }
-                }
-            });
+    //         const favorities = await prisma.favorites_Carts.findMany({
+    //             where: {
+    //                 userId: _body.userId,
+    //                 status: true
+    //             },
+    //             include: {
+    //                 product: {
+    //                     select: {
+    //                         name: true,
+    //                         product: {
+    //                             select: {
+    //                                 image: true,
+    //                                 price: true,
+    //                                 desc: true
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         });
 
-            return {
-                success: "Ok",
-                status: 201,
-                msg: "New category create in db",
-                data: { favorities },
-            };
-        } catch (error: any) {
-            return {
-                status: 400,
-                msg: "Error create category",
-                error: { ...error },
-            };
-        }
-    }
+    //         return {
+    //             success: "Ok",
+    //             status: 201,
+    //             msg: "New category create in db",
+    //             data: { favorities },
+    //         };
+    //     } catch (error: any) {
+    //         return {
+    //             status: 400,
+    //             msg: "Error create category",
+    //             error: { ...error },
+    //         };
+    //     }
+    // }
 
 
 }

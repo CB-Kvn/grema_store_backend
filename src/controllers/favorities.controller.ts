@@ -11,9 +11,9 @@ export class FavoritiesController {
         data: {
           id:_body.id,
           userId:_body.userId,
-          quantity:_body.quantyOrder,
+          quantity:_body.quantity,
           type:_body.type,
-          productId:_body.productId,
+          inventoryId:_body.inventoryId,
           status: true
         },
       });
@@ -59,44 +59,44 @@ export class FavoritiesController {
     }
   }
 
-  async getFavorities(_body: Favorities_Cart) {
-    try {
+  // async getFavorities(_body: Favorities_Cart) {
+  //   try {
 
-      const favorities = await prisma.favorites_Carts.findMany({
-          where:{
-            userId:_body.userId,
-            status:true
-          },
-          include:{
-            product:{
-              select:{
-                name:true,
-                product:{
-                  select:{
-                    image:true,
-                    price:true,
-                    desc:true
-                  }
-                }
-              }
-            }
-          }
-      });
+  //     const favorities = await prisma.favorites_Carts.findMany({
+  //         where:{
+  //           userId:_body.userId,
+  //           status:true
+  //         },
+  //         include:{
+  //           product:{
+  //             select:{
+  //               name:true,
+  //               product:{
+  //                 select:{
+  //                   image:true,
+  //                   price:true,
+  //                   desc:true
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //     });
 
-      return {
-        success: "Ok",
-        status: 201,
-        msg: "New category create in db",
-        data: { favorities },
-      };
-    } catch (error: any) {
-      return {
-        status: 400,
-        msg: "Error create category",
-        error: { ...error },
-      };
-    }
-  }
+  //     return {
+  //       success: "Ok",
+  //       status: 201,
+  //       msg: "New category create in db",
+  //       data: { favorities },
+  //     };
+  //   } catch (error: any) {
+  //     return {
+  //       status: 400,
+  //       msg: "Error create category",
+  //       error: { ...error },
+  //     };
+  //   }
+  // }
 
   
 }

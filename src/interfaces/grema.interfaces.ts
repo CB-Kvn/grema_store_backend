@@ -109,7 +109,16 @@ export interface Product {
 export interface Favorities_Cart {
   id: string
   userId: string
-  productId: string
+  inventoryId: string
+  type: string
+  quantity: number
+  status: boolean
+}
+
+export interface Shopping_Cart {
+  id: string
+  userId: string
+  inventoryId: string
   type: string
   quantyOrder: number
   status: boolean

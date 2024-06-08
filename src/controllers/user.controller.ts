@@ -21,9 +21,8 @@ export class UserController {
       const hashedPassword = await bcrypt.hash(_body.profile.password, 10);
       const user = await prisma.users.create({
         data: {
-          id: _body.id,
+          id: _body.id.toString(),
           name: _body.name,
-          lastName: _body.lastName,
           cellphone: _body.cellphone,
           createAtUsers: DateTime.now().setZone('America/Mexico_City').toString(),
           updateAtUsers: DateTime.now().setZone('America/Mexico_City').toString(),
@@ -197,7 +196,6 @@ export class UserController {
             select: {
               id: true,
               name: true,
-              lastName: true,
               cellphone: true,
 
             }
@@ -231,7 +229,7 @@ export class UserController {
           email: result.email,
           address: result.address,
           phone: result.user.cellphone,
-          name: result.user.name + " " + result.user.lastName,
+          name: result.user.name,
           userId: result.user.id,
           image: result.image,
           token: generateToken({
