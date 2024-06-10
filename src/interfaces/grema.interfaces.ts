@@ -186,7 +186,7 @@ export interface Invoice {
 
 export interface InvoiceDetail {
   orderNumber: string,
-  productId: string,
+  inventoryId: string,
   quantity: number,
   price: number,
 }

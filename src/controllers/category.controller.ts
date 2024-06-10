@@ -25,7 +25,7 @@ export class CategoriesController {
         success: "Ok",
         status: 201,
         msg: "New category create in db",
-        data: { _body },
+        data: { response },
       };
     } catch (error: any) {
       return {

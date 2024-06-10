@@ -18,8 +18,8 @@ model Users {
   genre         String
   profile       Profile?
   favorites     Favorites_Carts[]
-  createAtUsers DateTime?
-  updateAtUsers DateTime?
+  createAtUsers DateTime?         @default(now())
+  updateAtUsers DateTime?         @updatedAt
   status        Boolean
   invoices      Invoice[]
 }
@@ -32,13 +32,13 @@ model Profile {
   image           String
   user            Users     @relation(fields: [userId], references: [id])
   userId          String    @unique
-  createAtProfile DateTime?
-  updateAtProfile DateTime?
+  createAtProfile DateTime? @default(now())
+  updateAtProfile DateTime? @updatedAt
 }
 
 model Category {
   id              String    @id
-  name            String
+  name            String    @unique
   products        Product[]
   status          Boolean
   createAtProfile DateTime? @default(now())
@@ -46,19 +46,18 @@ model Category {
 }
 
 model Product {
-  id              String          @id
+  id              String      @id
   name            String
   description     String
   material        String
   size            String
   shape           String
-  category        Category        @relation(fields: [categoryId], references: [id])
+  category        Category    @relation(fields: [categoryId], references: [id])
   categoryId      String
   product         Inventory[]
   color           String
-  createAtProduct DateTime?       @default(now())
-  updateAtProduct DateTime?       @updatedAt
-  InvoiceDetail   InvoiceDetail[]
+  createAtProduct DateTime?   @default(now())
+  updateAtProduct DateTime?   @updatedAt
 }
 
 model Inventory {
@@ -72,6 +71,7 @@ model Inventory {
   status                   Boolean
   typeDesc                 String
   desc                     Int
+  InvoiceDetail            InvoiceDetail[]
   createAtProductInventory DateTime?         @default(now())
   updateAtProductInventory DateTime?         @updatedAt
 }
@@ -88,8 +88,7 @@ model Favorites_Carts {
 }
 
 model Invoice {
-  id              Int             @id @default(autoincrement())
-  orderId         String          @unique
+  orderId         String          @id @unique
   invoiceNumber   String?
   amount          Decimal
   user            Users           @relation(fields: [userId], references: [id])
@@ -116,8 +115,8 @@ model InvoiceDetail {
   order                 Invoice   @relation(fields: [orderNumber], references: [orderId])
   orderNumber           String
   invoiceId             String?
-  product               Product   @relation(fields: [productId], references: [id])
-  productId             String
+  inventory             Inventory @relation(fields: [inventoryId], references: [id])
+  inventoryId          String
   quantity              Int
   price                 Decimal
   status                String

@@ -43,7 +43,7 @@ export class OrdersControllers {
         const details = await prisma.invoiceDetail.create({
           data: {
             orderNumber: body.orderNumber,
-            productId: detail.productId,
+            inventoryId: detail.inventoryId,
             quantity: detail.quantity,
             price: detail.price,
             status: "solicitado"
