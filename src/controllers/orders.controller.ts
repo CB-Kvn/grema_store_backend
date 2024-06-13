@@ -21,25 +21,13 @@ export class OrdersControllers {
           tax: body.tax,
           typeShipping: body.typeShipping,
           shipping: body.shipping,
-          status: "recibida",
-          //   details: {
-          //     create: body.details.map(detail => ({
-
-          //         productId: detail.productId,
-          //         quantity: detail.quantity,
-          //         price: detail.price,
-          //         status: "solicitado",
-          //         order: {
-          //           connect: { orderNumber: body.orderNumber }
-          //       }
-          //     }))
-          // }
+          status: "recibida"
         }
 
       });
 
 
-      body.details.map(async (detail) => {
+       body.details.map(async (detail) => {
         const details = await prisma.invoiceDetail.create({
           data: {
             orderNumber: body.orderNumber,
@@ -51,65 +39,11 @@ export class OrdersControllers {
         })
       })
 
-      //   const {
-      //     orderNumber,
-
-      //     amount,
-      //     userId,
-      //     name,
-      //     idGues,
-      //     phone,
-      //     email,
-      //     address,
-      //     typeUser,
-      //     tax,
-      //     typeShipping,
-      //     shipping,
-      //     details
-      // } = body;
-
-
-      //   const result = await prisma.$transaction(async (prisma) => {
-      //     const invoice = await prisma.invoice.create({
-      //         data: {
-      //             orderNumber,
-
-      //             amount,
-      //             userId,
-      //             name,
-      //             idGues,
-      //             phone,
-      //             email,
-      //             address,
-      //             typeUser,
-      //             tax,
-      //             typeShipping,
-      //             shipping,
-      //             status:"recibida"
-      //         }
-      //     });
-
-      //     const invoiceDetails = await Promise.all(details.map(detail => {
-      //         return prisma.invoiceDetail.create({
-      //             data: {
-      //                 orderNumber: invoice.orderNumber,
-      //                 productId: detail.productId,
-      //                 quantity: detail.quantity,
-      //                 price: detail.price,
-      //                 status: "solicitado"
-      //             }
-      //         });
-      //     }));
-
-      //     return { invoice, invoiceDetails };
-      // });
-
-
       return {
         success: "Ok",
         status: 200,
         msg: "Create order sucessfully",
-        data: {},
+        data: {invoice},
       };
     } catch (error: any) {
       return {

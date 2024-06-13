@@ -15,28 +15,14 @@ export class SendEmail {
                 return res.status(405).json({
                     status: 405,
                     msg: "Invalid Method",
-                    error: "Method is a PUT but it send a " + req.method,
+                    error: "Method is a POST but it send a " + req.method,
                 });
 
                 
 
-            let emailTemplate
+           const body = req.body
 
-            if (req.body.type === "msgToClient") {
-                emailTemplate = messageToClient(req.body.text)
-            } else {
-                emailTemplate = confirmationNecesary()
-             }
-                
-
-            const _body = {
-                to: req.body.to,
-                subject: req.body.subject,
-                text: req.body.text,
-                html: emailTemplate.html,
-            }
-
-            const response: any = await controller.SendEmail(_body);
+            const response: any = await controller.SendEmail(body);
 
             if (response!.error) return res.status(response!.status!).json(response);
 

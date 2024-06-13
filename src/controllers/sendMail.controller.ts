@@ -1,12 +1,31 @@
+import { messageToClient } from "../templates/messageToClient";
 import { MailInterface } from "../interfaces/grema.interfaces";
 import { createConnectionEmail } from "../utils/emails/email_config";
+import { confirmationNecesary } from "../templates/confirmationNecesary";
 
 const transporter = createConnectionEmail()
 
 export class SendEmailController {
-    async SendEmail(_body:MailInterface){
+    async SendEmail(body:any){
 
         try {
+
+            let emailTemplate
+
+            if (body.type === "msgToClient") {
+                emailTemplate = messageToClient(body.text)
+            } else {
+                emailTemplate = confirmationNecesary(body.orderNumber,body.text)
+             }
+                
+
+            const _body = {
+                to: body.to,
+                subject: body.subject,
+                text: body.text,
+                html: emailTemplate.html,
+            }
+
             transporter.verify()
             transporter.sendMail({
                 from: process.env.SMTP_USER,
