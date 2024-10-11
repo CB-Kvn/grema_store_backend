@@ -70,8 +70,9 @@ export enum KeysToValidateProfileLogin {
 }
 
 export interface EntriesGenerateToken {
-  userId: number | string;
+  userId?: number | string;
   email: string;
+  option?:string
 }
 
 export interface DecodeReponseJwt {

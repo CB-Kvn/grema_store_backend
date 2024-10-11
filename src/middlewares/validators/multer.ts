@@ -1,21 +1,19 @@
 import multer from 'multer';
 import path from 'path';
 import { Request, Response, NextFunction } from 'express';
-import { DateTime } from 'luxon';
 
 // Configuración de Multer
 let listNames:[]
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, 'public/img/uploads')); // Ajusta el directorio según sea necesario
+    cb(null, path.join(__dirname, '../../../src/assets/img')); // Ajusta el directorio según sea necesario
   },
   filename: (req:Request, file, cb) => {
-    const body = JSON.parse(JSON.stringify(req.body))
-    const nameArchive = `${Date.now}-${file.originalname}`
+    const body = req.body
+    const nameArchive = `${Date.now()}-${file.originalname}`
     
     req.body = {
-      ...req.body ,
-      nameArchive
+      ...req.body
     }
     
     cb(null,nameArchive );
@@ -44,6 +42,7 @@ const upload = multer({
 
 // Middleware para manejo de archivos
 export const archivesManager = (req: Request, res: Response, next: NextFunction) => {
+  
   upload.array('files')(req, res, (err: any) => {
     if (err instanceof multer.MulterError) {
       // Error generado por Multer

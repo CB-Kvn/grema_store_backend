@@ -15,7 +15,6 @@ model Users {
   id            String            @id
   name          String
   cellphone     String
-  genre         String
   profile       Profile?
   favorites     Favorites_Carts[]
   createAtUsers DateTime?         @default(now())
@@ -30,17 +29,26 @@ model Profile {
   password        String
   address         String
   image           String
+  rol             RolUser   @relation(fields: [rolId], references: [id])
+  rolId           Int       // Clave foránea que referencia a RolUser
   user            Users     @relation(fields: [userId], references: [id])
   userId          String    @unique
   createAtProfile DateTime? @default(now())
   updateAtProfile DateTime? @updatedAt
 }
 
+model RolUser {
+  id   Int    @id @default(autoincrement())
+  name String
+  profiles Profile[] // Un rol puede estar asociado a varios perfiles
+}
+
+
 model Category {
   id              String    @id
   name            String    @unique
   products        Product[]
-  status          Boolean
+  status          String
   createAtProfile DateTime? @default(now())
   updateAtProfile DateTime? @updatedAt
 }
@@ -68,7 +76,7 @@ model Inventory {
   image                    String[]
   price                    Decimal
   favorites                Favorites_Carts[]
-  status                   Boolean
+  status                   String
   typeDesc                 String
   desc                     Int
   InvoiceDetail            InvoiceDetail[]
@@ -90,7 +98,7 @@ model Favorites_Carts {
 model Invoice {
   orderId         String          @id @unique
   invoiceNumber   String?
-  amount          Decimal
+  subtotal          Decimal
   user            Users           @relation(fields: [userId], references: [id])
   userId          String
   name            String?
@@ -105,6 +113,9 @@ model Invoice {
   details         InvoiceDetail[]
   pdf             String?
   confirmation    String?
+  taxAmount       Decimal
+  discount        Decimal
+  total           Decimal
   status          String
   createAtInvoice DateTime?       @default(now())
   updateAtInvoice DateTime?       @updatedAt
@@ -116,10 +127,54 @@ model InvoiceDetail {
   orderNumber           String
   invoiceId             String?
   inventory             Inventory @relation(fields: [inventoryId], references: [id])
-  inventoryId          String
+  inventoryId           String
   quantity              Int
+  discount              Decimal
+  amountDiscount        Decimal
+  porcentageDiscount    Int
   price                 Decimal
   status                String
   createAtInvoiceDetail DateTime? @default(now())
   updateAtInvoiceDetail DateTime? @updatedAt
+}
+
+model MantColor {
+  id                String    @id
+  name              String
+  hexaCode               String
+  status            String
+  createAtMantColor DateTime? @default(now())
+  updateAtMantColor DateTime? @updatedAt
+}
+
+model MantMaterial {
+  id                String    @id
+  name              String
+  status            String
+  createAtMantColor DateTime? @default(now())
+  updateAtMantColor DateTime? @updatedAt
+}
+
+model MantSize {
+  id                String    @id
+  name              String
+  status            String
+  createAtMantColor DateTime? @default(now())
+  updateAtMantColor DateTime? @updatedAt
+}
+
+model MantShape {
+  id                String    @id
+  name              String
+  status            String
+  createAtMantColor DateTime? @default(now())
+  updateAtMantColor DateTime? @updatedAt
+}
+
+model BoxPrice {
+  id                Int       @id @default(autoincrement())
+  gam               Decimal
+  other             Decimal
+  createAtMantColor DateTime? @default(now())
+  updateAtMantColor DateTime? @updatedAt
 }

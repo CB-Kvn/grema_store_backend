@@ -11,7 +11,8 @@
         "typeRoots": ["./types","./node_modules/@types"],
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-        "strict": true
+        "strict": true,
+        "skipLibCheck": true
     },
     "include": ["src/**/*", "index.ts"],
 }

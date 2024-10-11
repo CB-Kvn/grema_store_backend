@@ -4,17 +4,25 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import compression from "compression";
 import cors from 'cors';
-import dotenv from 'dotenv'; 
+import dotenv from 'dotenv';
 import path from 'path'
 
-import { router as userRoutes } from './src/routes/user.routes'
-import { router as categoryRoutes } from './src/routes/category.routes'
-import { router as productRoutes } from './src/routes/product.routes'
-import { router as filterstRoutes } from './src/routes/filters.routes'
-import { router as favorities } from './src/routes/favorites.routes'
-import { router as shopping } from './src/routes/shoppinCar.routes'
-import { router as emails } from './src/routes/sendEmails.routes'
-import { router as orders } from './src/routes/orders.routes'
+// import { router as userRoutes } from './src/routes/user.routes'
+// import { router as categoryRoutes } from './src/routes/category.routes'
+// import { router as productRoutes } from './src/routes/product.routes'
+import { router as filterstRoutes } from './src/routes/new_routes/filters.routes'
+// import { router as favorities } from './src/routes/favorites.routes'
+// import { router as shopping } from './src/routes/shoppinCar.routes'
+// import { router as emails } from './src/routes/sendEmails.routes'
+import { router as orders } from './src/routes/new_routes/orders.routes'
+import { router as inventory } from './src/routes/new_routes/inventary.routes'
+import { router as login } from './src/routes/new_routes/login.routes'
+import { router as carrier } from './src/routes/new_routes/carrier.routes'
+import { router as signIn } from './src/routes/new_routes/sign.routes'
+import { router as users } from './src/routes/new_routes/users.routes'
+import { router as mantenaince } from './src/routes/new_routes/mantenaince.routes'
+
+
 
 import multer from "multer";
 
@@ -32,39 +40,22 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json({ limit: '200mb' }));
 
-// const storage = multer.diskStorage({
-//       destination: path.join(__dirname, 'public/img/uploads'),
-//       filename: function (req, file, cb) {
-//         cb(null, `${Date.now()}-${file.originalname}`);
-//       }
-//     });
-
-// app.use(multer({storage}).array('images'));
-
-// app.use(express.static(path.join(__dirname, 'public')));
-
-
-// const storage = multer.diskStorage({
-//     destination: path.join(__dirname, 'public/img/uploads'),
-//     filename: function (req, file, cb) {
-//       cb(null, `${Date.now()}-${file.originalname}`);
-//     }
-//   });
-
-// app.use(multer({storage}).array('archives'));
-
-// app.use(express.static(path.join(__dirname, 'public')));
-
 
 let url_base = process.env.URL_API
 console.log(url_base)
-app.use(url_base + 'user/', userRoutes)
-app.use(url_base + 'category/', categoryRoutes)
-app.use(url_base + 'product/', productRoutes)
+
+// app.use(url_base + 'category/', categoryRoutes)
+// app.use(url_base + 'product/', productRoutes)
+
+// app.use(url_base + 'favorities/', favorities)
+app.use(url_base + 'mantenaince/', mantenaince)
+app.use(url_base + 'signIn/', signIn)
 app.use(url_base + 'filters/', filterstRoutes)
-app.use(url_base + 'favorities/', favorities)
-app.use(url_base + 'shopping/', shopping)
 app.use(url_base + 'orders/', orders)
+app.use(url_base + 'inventory/', inventory)
+app.use(url_base + 'verify/', login)
+app.use(url_base + 'carrier/', carrier)
+app.use(url_base + 'users/', users)
 
 const server = http.createServer(app);
 
