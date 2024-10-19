@@ -29,10 +29,13 @@ model Profile {
   password        String
   address         String
   image           String
+  bio             String?
   rol             RolUser   @relation(fields: [rolId], references: [id])
   rolId           Int       // Clave foránea que referencia a RolUser
   user            Users     @relation(fields: [userId], references: [id])
   userId          String    @unique
+  marketingEmails String?
+  securityEmails  String?
   createAtProfile DateTime? @default(now())
   updateAtProfile DateTime? @updatedAt
 }

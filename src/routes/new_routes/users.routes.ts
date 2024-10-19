@@ -8,3 +8,4 @@ const controller = new UsersController(service)
 
 
 router.post("/user-information", (req, res) => controller.getUserInformation(req, res))
+router.post('/verify-password', (req, res) => controller.verifyCurrentPassword(req, res));
