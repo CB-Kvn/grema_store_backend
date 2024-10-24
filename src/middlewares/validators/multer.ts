@@ -43,7 +43,7 @@ const upload = multer({
 // Middleware para manejo de archivos
 export const archivesManager = (req: Request, res: Response, next: NextFunction) => {
   
-  upload.array('files')(req, res, (err: any) => {
+  upload.array('files',5)(req, res, (err: any) => {
     if (err instanceof multer.MulterError) {
       // Error generado por Multer
       return res.status(400).json({ error: `Multer error: ${err.message}` });

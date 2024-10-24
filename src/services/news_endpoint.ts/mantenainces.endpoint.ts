@@ -351,4 +351,34 @@ export class MantShapeService {
   }
 }
 
+export class MantCategoryService {
+  private prisma: PrismaClient;
+
+  constructor() {
+    this.prisma = new PrismaClient();
+  }
+
+  public async getAllCategory(status: string): Promise<any> {
+    try {
+
+      let shapes
+      if (status === "all") {
+        shapes = await this.prisma.category.findMany();
+      } else {
+        shapes = await this.prisma.category.findMany({
+          where: {
+            status: status
+          }
+        });
+      }
+      logger.debug({ message: 'Successfully retrieved all shapes', data: shapes });
+      return { message: 'Successfully retrieved all shapes', data: shapes };
+    } catch (error: any) {
+      logger.error(`Error fetching shapes: ${error.message}`);
+      throw new Error('Error fetching shapes');
+    }
+  }
+
+}
+
 

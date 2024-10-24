@@ -1,6 +1,6 @@
 import express from 'express';
-import { MantColorController, MantMaterialController, MantShapeController, MantSizeController } from '../../../src/controllers/news_controller/mantenaince.controller';
-import { MantColorService, MantMaterialService, MantShapeService, MantSizeService } from '../../../src/services/news_endpoint.ts/mantenainces.endpoint';
+import { MantCategoryController, MantColorController, MantMaterialController, MantShapeController, MantSizeController } from '../../../src/controllers/news_controller/mantenaince.controller';
+import { MantCategoryService, MantColorService, MantMaterialService, MantShapeService, MantSizeService } from '../../../src/services/news_endpoint.ts/mantenainces.endpoint';
 
 
 export const router = express.Router();
@@ -9,11 +9,13 @@ const  mantColorService = new MantColorService();
 const  mantMaterialService = new MantMaterialService();
 const  mantSizeService = new MantSizeService();
 const  mantShaperService = new MantShapeService();
+const  mantCategoryService = new MantCategoryService();
 
 const mantColorController = new MantColorController(mantColorService);
 const mantMaterialController = new MantMaterialController(mantMaterialService);
 const mantSizeController = new MantSizeController(mantSizeService);
 const mantShapeController = new MantShapeController(mantShaperService);
+const mantCategoryController = new MantCategoryController(mantCategoryService);
 
 router.post("/color", (req, res) => mantColorController.createColor(req, res));
 router.get("/color-all", (req, res) => mantColorController.getAllColors(req, res));
@@ -41,3 +43,5 @@ router.get("/shape-all", (req, res) => mantShapeController.getAllShapes(req, res
 router.get("/shape/:id", (req, res) => mantShapeController.getShapeById(req, res));
 router.put("/shape/:id", (req, res) => mantShapeController.updateShape(req, res));
 router.delete("/shape/:id", (req, res) => mantShapeController.deleteShape(req, res));
+
+router.get("/category-all", (req, res) => mantCategoryController.getAllCategory(req, res));

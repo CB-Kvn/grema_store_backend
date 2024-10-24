@@ -67,6 +67,26 @@ class InventaryController {
       res.status(500).json({ error: 'Internal server error' });
     }
   }
+  public async postAddProducts(req: Request, res: Response): Promise<void> {
+
+
+    try {
+      logger.info(req)
+      const {cantidad,categoria,descripcion,color,forma,imgs,material,size,nombre,precio} = req.body
+
+      const response = await this.inventaryService.postAddProducts({cantidad,categoria,color,size,descripcion,forma,imgs,material,nombre,precio})
+
+      // if (!response) {
+      //   res.status(404).json({ error: 'Products not found' });
+      //   return;
+      // }
+
+      // res.status(200).json(response);
+    } catch (error:any) {
+      logger.error(`Failed to retrieve user: ${error.message}`);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
 }
 
 export default InventaryController;

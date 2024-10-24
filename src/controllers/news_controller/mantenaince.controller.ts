@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import logger from '../../../src/utils/logger/logger';
-import { MantColorService, MantMaterialService, MantShapeService, MantSizeService } from '../../../src/services/news_endpoint.ts/mantenainces.endpoint';
+import { MantCategoryService, MantColorService, MantMaterialService, MantShapeService, MantSizeService } from '../../../src/services/news_endpoint.ts/mantenainces.endpoint';
 
 
 export class MantShapeController {
@@ -335,6 +335,32 @@ export class MantColorController {
             res.status(204).send();
         } catch (error: any) {
             logger.error(`Failed to delete color with ID ${req.params.id}: ${error.message}`);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+}
+
+
+export class MantCategoryController {
+    private mantCategoryService: MantCategoryService;
+
+    constructor(mantCategoryService: MantCategoryService) {
+        this.mantCategoryService = mantCategoryService;
+    }
+
+    public async getAllCategory(req: Request, res: Response): Promise<void> {
+        try {
+            const status = req.query.status
+            const shapes = await this.mantCategoryService.getAllCategory(status!.toString());
+
+            if (!shapes || shapes.length === 0) {
+                res.status(404).json({ error: 'No shapes found' });
+                return;
+            }
+
+            res.status(200).json(shapes);
+        } catch (error: any) {
+            logger.error(`Failed to retrieve shapes: ${error.message}`);
             res.status(500).json({ error: 'Internal server error' });
         }
     }
