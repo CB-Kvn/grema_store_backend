@@ -21,6 +21,7 @@ import { router as carrier } from './src/routes/new_routes/carrier.routes'
 import { router as signIn } from './src/routes/new_routes/sign.routes'
 import { router as users } from './src/routes/new_routes/users.routes'
 import { router as mantenaince } from './src/routes/new_routes/mantenaince.routes'
+import { router as tilopay } from './src/routes/new_routes/tilopay.routes'
 
 
 
@@ -56,6 +57,7 @@ app.use(url_base + 'inventory/', inventory)
 app.use(url_base + 'verify/', login)
 app.use(url_base + 'carrier/', carrier)
 app.use(url_base + 'users/', users)
+app.use(url_base + 'tilopay/', tilopay)
 
 const server = http.createServer(app);
 
