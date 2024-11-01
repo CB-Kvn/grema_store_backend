@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import { DecodeReponseJwt } from '../../../src/interfaces/grema.interfaces';
+import { DecodeReponseJwt, DecodeResponseIO } from '../../../src/interfaces/grema.interfaces';
 
 export const verifyTokenJwt = (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -26,9 +26,20 @@ export const verifyTokenJwt = (req: Request, res: Response, next: NextFunction) 
             return res.status(401).json({ message: 'Invalid or expired token' });
         }
 
-        // El token es válido, pasamos al siguiente middleware
         next();
     } catch (error) {
         return res.status(401).json({ message: 'Failed to authenticate token', error });
     }
 };
+
+export const verifyTokenIO = (token: string): boolean =>{
+    try {
+      const decoded = jwt.verify(token, process.env.SECURE_TOKEN_IO!) as DecodeResponseIO;
+      if(decoded.idServer === process.env.ID_SERVER! && decoded.nameServer === process.env.NAME_SERVER! && decoded.passworServer === process.env.PASSWORD_SERVER! ){
+            return true
+      }
+      return false
+    } catch (err) {
+      return false;
+    }
+  }

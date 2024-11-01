@@ -83,6 +83,12 @@ export interface DecodeReponseJwt {
   exp: number;
 }
 
+export interface DecodeResponseIO {
+  idServer: string ;
+  nameServer: string;
+  passworServer: string;
+}
+
 
 export interface ProductInventory {
   quantity: number;

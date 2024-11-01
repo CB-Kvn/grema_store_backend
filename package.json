@@ -57,6 +57,7 @@
     "pino": "^9.3.2",
     "pino-pretty": "^11.2.2",
     "postgresql": "^0.0.1",
+    "socket.io": "^4.8.1",
     "uuid": "^9.0.1"
   }
 }

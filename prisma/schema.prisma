@@ -101,7 +101,7 @@ model Favorites_Carts {
 model Invoice {
   orderId         String          @id @unique
   invoiceNumber   String?
-  subtotal          Decimal
+  subtotal        Decimal
   user            Users           @relation(fields: [userId], references: [id])
   userId          String
   name            String?
@@ -118,6 +118,7 @@ model Invoice {
   confirmation    String?
   taxAmount       Decimal
   discount        Decimal
+  tracking        String?
   total           Decimal
   status          String
   createAtInvoice DateTime?       @default(now())
