@@ -29,7 +29,11 @@ class SignService {
                       create: {
                         email: userData.personal.email,
                         password: hashedPassword,
-                        address:  `${userData.address.address},${userData.address.city},${userData.address.country}`,
+                        country:userData.address.country,
+                        addressComplete:  `${userData.address.address},${userData.address.country},${userData.address.province},${userData.address.canton}`,
+                        province:userData.address.province,          
+                        canton:userData.address.canton,           
+                        postal:userData.address.postal,            
                         image: userData.imgs[0],
                         rolId:2
                        },
@@ -38,7 +42,13 @@ class SignService {
                   include:{
                     profile:{
                       select:{
-                        address:true,
+                        province:true,
+                        addressComplete: true,
+                        canton:true,
+                        country:true,
+                        provinceFac:true,
+                        addressCompleteFac: true,
+                        cantonFac:true,
                         image:true,
                         email:true,
                         rolId:true,

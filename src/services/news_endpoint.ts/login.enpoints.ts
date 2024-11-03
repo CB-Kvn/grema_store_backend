@@ -33,7 +33,13 @@ class LoginService {
                 select: {
                     userId: true,
                     password: true,
-                    address: true,
+                    province:true,
+                    addressComplete: true,
+                    canton:true,
+                    country:true,
+                    provinceFac:true,
+                    addressCompleteFac: true,
+                    cantonFac:true,
                     createAtProfile: true,
                     email: true,
                     id: true,
@@ -69,6 +75,7 @@ class LoginService {
             }
 
             const {token_jwt,refreshToken} = generateTokens({ userId: result.userId, email: result.email })
+            logger.info(token_jwt,refreshToken)
 
             return {
                 message: "Login succesfull",

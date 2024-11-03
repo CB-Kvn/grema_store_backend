@@ -9,6 +9,7 @@ const controller = new OrdersController(service)
 
 
 router.post("/orders-in", (req, res) => controller.postOrders(req, res))
+router.post("/track-in", (req, res) => controller.postOrdersTrack(req, res))
 router.post("/orders-users", (req, res) => controller.getOrdersUsers(req, res))
 router.get("/amount-month-year", (req, res) => controller.getAmountMonthYear(req, res))
 router.post("/orders-week", (req, res) => controller.getOrdersUsersWeek(req, res))

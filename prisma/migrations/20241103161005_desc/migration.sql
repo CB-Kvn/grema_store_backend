@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Inventory" ALTER COLUMN "desc" SET DATA TYPE DECIMAL(65,30);

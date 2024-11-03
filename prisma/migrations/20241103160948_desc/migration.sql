@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Inventory" ADD COLUMN     "amountDesc" DECIMAL(65,30),
+ALTER COLUMN "typeDesc" DROP NOT NULL,
+ALTER COLUMN "desc" DROP NOT NULL;

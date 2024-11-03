@@ -24,28 +24,35 @@ model Users {
 }
 
 model Profile {
-  id              Int       @id @default(autoincrement())
-  email           String    @unique
-  password        String
-  address         String
-  image           String
-  bio             String?
-  rol             RolUser   @relation(fields: [rolId], references: [id])
-  rolId           Int       // Clave foránea que referencia a RolUser
-  user            Users     @relation(fields: [userId], references: [id])
-  userId          String    @unique
-  marketingEmails String?
-  securityEmails  String?
-  createAtProfile DateTime? @default(now())
-  updateAtProfile DateTime? @updatedAt
+  id                 Int       @id @default(autoincrement())
+  email              String    @unique
+  password           String
+  country            String
+  province           String?
+  canton             String?
+  postal             String?
+  addressComplete    String?
+  provinceFac        String?
+  cantonFac          String?
+  postalFac          String?
+  addressCompleteFac String?
+  image              String
+  bio                String?
+  rol                RolUser   @relation(fields: [rolId], references: [id])
+  rolId              Int // Clave foránea que referencia a RolUser
+  user               Users     @relation(fields: [userId], references: [id])
+  userId             String    @unique
+  marketingEmails    String?
+  securityEmails     String?
+  createAtProfile    DateTime? @default(now())
+  updateAtProfile    DateTime? @updatedAt
 }
 
 model RolUser {
-  id   Int    @id @default(autoincrement())
-  name String
+  id       Int       @id @default(autoincrement())
+  name     String
   profiles Profile[] // Un rol puede estar asociado a varios perfiles
 }
-
 
 model Category {
   id              String    @id
@@ -80,8 +87,9 @@ model Inventory {
   price                    Decimal
   favorites                Favorites_Carts[]
   status                   String
-  typeDesc                 String
-  desc                     Int
+  typeDesc                 String?
+  desc                     Decimal?
+  amountDesc               Decimal?
   InvoiceDetail            InvoiceDetail[]
   createAtProductInventory DateTime?         @default(now())
   updateAtProductInventory DateTime?         @updatedAt
@@ -145,7 +153,7 @@ model InvoiceDetail {
 model MantColor {
   id                String    @id
   name              String
-  hexaCode               String
+  hexaCode          String
   status            String
   createAtMantColor DateTime? @default(now())
   updateAtMantColor DateTime? @updatedAt

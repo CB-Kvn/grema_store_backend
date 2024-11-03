@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Profile" ALTER COLUMN "addressComplete" DROP NOT NULL,
+ALTER COLUMN "province" DROP NOT NULL,
+ALTER COLUMN "canton" DROP NOT NULL,
+ALTER COLUMN "postal" DROP NOT NULL;

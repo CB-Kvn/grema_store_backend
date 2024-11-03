@@ -43,7 +43,7 @@ export class SocketService {
                 try {
                     const product = await this.prisma.inventory.update({
                         where: { id: productId },
-                        data: { quantity: { decrement: quantity } },
+                        data: { quantity:{decrement:quantity} },
                     });
                     this.io.emit('inventoryUpdated', product);
                     logger.info('inventoryUpdated')

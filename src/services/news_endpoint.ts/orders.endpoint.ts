@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import logger from "../../../src/utils/logger/logger";
 import { v4 as uuidv4 } from 'uuid';
 import { ResponseEnpoints } from "./sign.endpoint";
+import { Track } from "../../../src/interfaces/grema.interfaces";
 
 class OrdersService {
   private prisma: PrismaClient;
@@ -54,6 +55,28 @@ class OrdersService {
       );
 
       return { message: "Order created successfully", data: orderNumber };
+    } catch (error: any) {
+      logger.error(`Error posting data: ${error.message}`);
+      throw new Error("Error posting order data");
+    }
+  }
+  public async postOrdersTrack(body: Track): Promise<ResponseEnpoints> {
+    try {
+      
+
+      const trackInvoice = await this.prisma.invoice.update({
+        where:{
+          orderId:body.idOrder
+        },
+        data:{
+          tracking:body.track
+        }
+      })
+
+
+
+    
+      return { message: "Order created successfully", data: trackInvoice };
     } catch (error: any) {
       logger.error(`Error posting data: ${error.message}`);
       throw new Error("Error posting order data");

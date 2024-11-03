@@ -197,3 +197,8 @@ export interface InvoiceDetail {
   quantity: number,
   price: number,
 }
+
+export interface Track{
+  idOrder:string
+  track:string
+}

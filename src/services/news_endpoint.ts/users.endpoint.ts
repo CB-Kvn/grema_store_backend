@@ -14,13 +14,31 @@ class UsersService {
     try {
       
       const resultados = await this.prisma.profile.findUnique({
-    
-        where:{
-            email:_email
+        where: {
+          email: _email,
         },
-        include:{
-            user:true
-        }
+        select: {
+          id: true,
+          email: true,
+          country: true,
+          province: true,
+          canton: true,
+          postal: true,
+          addressComplete: true,
+          provinceFac: true,
+          cantonFac: true,
+          postalFac: true,
+          addressCompleteFac: true,
+          image: true,
+          bio: true,
+          user: {
+            select: {
+              id: true,
+              cellphone: true,
+              name: true,
+            },
+          },
+        },
       });
       
       logger.debug({message:"Sucessfully get data user",data:resultados});
