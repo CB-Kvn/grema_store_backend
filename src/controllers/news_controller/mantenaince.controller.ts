@@ -364,4 +364,15 @@ export class MantCategoryController {
             res.status(500).json({ error: 'Internal server error' });
         }
     }
+
+    // public async createCategory(req: Request, res: Response): Promise<void> {
+    //     try {
+    //         const newMaterial = await this.mantCategoryService.createMaterial(req.body);
+
+    //         res.status(201).json(newMaterial);
+    //     } catch (error: any) {
+    //         logger.error(`Failed to create material: ${error.message}`);
+    //         res.status(400).json({ error: 'Invalid request data' });
+    //     }
+    // }
 }

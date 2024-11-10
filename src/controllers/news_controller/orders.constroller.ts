@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import logger from '../../../src/utils/logger/logger';
-import OrdersService from '../../../src/services/news_endpoint.ts/orders.endpoint';
+import logger from '../../utils/logger/logger';
+import OrdersService from '../../services/news_endpoint.ts/orders.endpoint';
 import { body } from 'express-validator';
 
 class OrdersController {

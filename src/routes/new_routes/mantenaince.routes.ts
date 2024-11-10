@@ -17,7 +17,7 @@ const mantSizeController = new MantSizeController(mantSizeService);
 const mantShapeController = new MantShapeController(mantShaperService);
 const mantCategoryController = new MantCategoryController(mantCategoryService);
 
-router.post("/color", (req, res) => mantColorController.createColor(req, res));
+
 router.get("/color-all", (req, res) => mantColorController.getAllColors(req, res));
 router.get("/color/:id", (req, res) => mantColorController.getColorById(req, res));
 router.put("/color/:id", (req, res) => mantColorController.updateColor(req, res));
@@ -30,12 +30,6 @@ router.get("/material/:id", (req, res) => mantMaterialController.getMaterialById
 router.put("/material/:id", (req, res) => mantMaterialController.updateMaterial(req, res));
 router.delete("/material/:id", (req, res) => mantMaterialController.deleteMaterial(req, res));
 
-// Rutas para MantSize
-router.post("/size", (req, res) => mantSizeController.createSize(req, res));
-router.get("/size-all", (req, res) => mantSizeController.getAllSizes(req, res));
-router.get("/size/:id", (req, res) => mantSizeController.getSizeById(req, res));
-router.put("/size/:id", (req, res) => mantSizeController.updateSize(req, res));
-router.delete("/size/:id", (req, res) => mantSizeController.deleteSize(req, res));
 
 // Rutas para MantShape
 router.post("/shape", (req, res) => mantShapeController.createShape(req, res));
@@ -45,3 +39,4 @@ router.put("/shape/:id", (req, res) => mantShapeController.updateShape(req, res)
 router.delete("/shape/:id", (req, res) => mantShapeController.deleteShape(req, res));
 
 router.get("/category-all", (req, res) => mantCategoryController.getAllCategory(req, res));
+// router.post("/category", (req, res) => mantCategoryController.createCategory(req, res)); 

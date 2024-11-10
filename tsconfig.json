@@ -2,17 +2,22 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "ES2020",
+        "moduleResolution": "node", // Permite una mejor resolución de módulos en CommonJS
         "baseUrl": ".",
         "outDir": "./dist",
+        "rootDir": "./src", // Ayuda a mantener la estructura al compilar
         "sourceMap": true,
         "noImplicitAny": true,
-        "paths": {"*":["types/"]},
+        "paths": {
+            "*": ["types/"]
+        },
         "resolveJsonModule": true,
-        "typeRoots": ["./types","./node_modules/@types"],
+        "typeRoots": ["./types", "./node_modules/@types"],
         "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true, // Facilita las importaciones con CommonJS
         "forceConsistentCasingInFileNames": true,
         "strict": true,
         "skipLibCheck": true
     },
-    "include": ["src/**/*", "index.ts"],
+    "include": ["src/**/*", "index.ts"]
 }

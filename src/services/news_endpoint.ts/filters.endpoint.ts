@@ -1,6 +1,7 @@
 import { Inventory, PrismaClient } from "@prisma/client";
-import logger from "../../../src/utils/logger/logger";
+
 import { ResponseEnpoints } from "./sign.endpoint";
+import  logger  from "../../../src/utils/logger/logger";
 
 class FiltersService {
   private prisma: PrismaClient;

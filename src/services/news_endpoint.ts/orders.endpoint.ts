@@ -1,8 +1,9 @@
 import { PrismaClient } from "@prisma/client";
-import logger from "../../../src/utils/logger/logger";
+
 import { v4 as uuidv4 } from 'uuid';
 import { ResponseEnpoints } from "./sign.endpoint";
 import { Track } from "../../../src/interfaces/grema.interfaces";
+import logger from "../../../src/utils/logger/logger";
 
 class OrdersService {
   private prisma: PrismaClient;

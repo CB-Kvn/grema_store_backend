@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-import logger from '../../../src/utils/logger/logger';
+
 import FiltersService from "../../../src/services/news_endpoint.ts/filters.endpoint";
+import  logger  from '../../../src/utils/logger/logger';
 
 class FiltersController {
     private filtersService: FiltersService;

@@ -1,6 +1,6 @@
 import express from "express";
 import OrdersService from "../../../src/services/news_endpoint.ts/orders.endpoint";
-import OrdersController from "../../../src/controllers/news_controller/orders.constroller";
+import OrdersController from "../../controllers/news_controller/orders.constroller";
 
 
 export const router = express.Router()

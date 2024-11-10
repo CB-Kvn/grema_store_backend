@@ -33,7 +33,7 @@ class SignService {
                         addressComplete:  `${userData.address.address},${userData.address.country},${userData.address.province},${userData.address.canton}`,
                         province:userData.address.province,          
                         canton:userData.address.canton,           
-                        postal:userData.address.postal,            
+                        postal:userData.address.codigoPostal,            
                         image: userData.imgs[0],
                         rolId:2
                        },

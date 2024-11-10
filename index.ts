@@ -18,6 +18,7 @@ import { router as tilopay } from './src/routes/new_routes/tilopay.routes'
 import { Server } from "socket.io";
 import { PrismaClient } from "@prisma/client";
 import { SocketService } from "./src/services/socket-io/socketService";
+import logger from "./src/utils/logger/logger";
 
 
 const app = express();
@@ -69,5 +70,5 @@ const prisma = new PrismaClient();
 const socketService = new SocketService(io, prisma);
 
 server.listen(Number(process.env.PORT), () => {
-    console.log('Server running on http://localhost:5000/')
+    logger.debug('Server running on http://localhost:5000/')
 })
