@@ -378,6 +378,48 @@ export class MantCategoryService {
       throw new Error('Error fetching shapes');
     }
   }
+  public async createCategory(data: any): Promise<any> {
+    try {
+
+      const response = await this.prisma.category.create({
+        data:{
+          id:  uuidv4(),
+          name: data.data.mantenaince.name,
+          status: data.data.mantenaince.status
+        }
+      })
+      logger.debug({ message: 'Successfully retrieved all categories', data: response });
+      return { message: 'Successfully retrieved all categories', data: response };
+    } catch (error: any) {
+      logger.error(`Error fetching categories: ${error.message}`);
+      throw new Error('Error fetching categories');
+    }
+  }
+
+  public async updateCategory(id: string, data: any): Promise<any> {
+    try {
+      const updatedShape = await this.prisma.mantShape.update({
+        where: { id },
+        data,
+      });
+      logger.debug({ message: 'Successfully updated category', data: updatedShape });
+      return { message: 'Successfully updated category', data: updatedShape };
+    } catch (error: any) {
+      logger.error(`Error updating category: ${error.message}`);
+      throw new Error('Error updating category');
+    }
+  }
+
+  public async deleteCategory(id: string): Promise<any> {
+    try {
+      await this.prisma.mantShape.delete({ where: { id } });
+      logger.debug({ message: 'Successfully deleted category', id });
+      return { message: 'Successfully deleted category' };
+    } catch (error: any) {
+      logger.error(`Error deleting category: ${error.message}`);
+      throw new Error('Error deleting category');
+    }
+  }
 
 }
 

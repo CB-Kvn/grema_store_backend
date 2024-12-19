@@ -365,14 +365,45 @@ export class MantCategoryController {
         }
     }
 
-    // public async createCategory(req: Request, res: Response): Promise<void> {
-    //     try {
-    //         const newMaterial = await this.mantCategoryService.createMaterial(req.body);
+    public async createCategory(req: Request, res: Response): Promise<void> {
+        try {
+            const newMaterial = await this.mantCategoryService.createCategory(req.body);
 
-    //         res.status(201).json(newMaterial);
-    //     } catch (error: any) {
-    //         logger.error(`Failed to create material: ${error.message}`);
-    //         res.status(400).json({ error: 'Invalid request data' });
-    //     }
-    // }
+            res.status(201).json(newMaterial);
+        } catch (error: any) {
+            logger.error(`Failed to create material: ${error.message}`);
+            res.status(400).json({ error: 'Invalid request data' });
+        }
+    }
+    public async updateColor(req: Request, res: Response): Promise<void> {
+        try {
+            const updatedColor = await this.mantCategoryService.updateCategory(req.params.id, req.body);
+
+            if (!updatedColor) {
+                res.status(404).json({ error: 'Color not found' });
+                return;
+            }
+
+            res.status(200).json(updatedColor);
+        } catch (error: any) {
+            logger.error(`Failed to update color with ID ${req.params.id}: ${error.message}`);
+            res.status(400).json({ error: 'Invalid request data' });
+        }
+    }
+
+    public async deleteColor(req: Request, res: Response): Promise<void> {
+        try {
+            const deletedColor = await this.mantCategoryService.deleteCategory(req.params.id);
+
+            if (!deletedColor) {
+                res.status(404).json({ error: 'Color not found' });
+                return;
+            }
+
+            res.status(204).send();
+        } catch (error: any) {
+            logger.error(`Failed to delete color with ID ${req.params.id}: ${error.message}`);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
 }

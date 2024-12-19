@@ -39,4 +39,6 @@ router.put("/shape/:id", (req, res) => mantShapeController.updateShape(req, res)
 router.delete("/shape/:id", (req, res) => mantShapeController.deleteShape(req, res));
 
 router.get("/category-all", (req, res) => mantCategoryController.getAllCategory(req, res));
-// router.post("/category", (req, res) => mantCategoryController.createCategory(req, res)); 
+router.post("/category", (req, res) => mantCategoryController.createCategory(req, res)); 
+router.put("/shape/:id", (req, res) => mantShapeController.updateShape(req, res));
+router.delete("/shape/:id", (req, res) => mantShapeController.deleteShape(req, res));
