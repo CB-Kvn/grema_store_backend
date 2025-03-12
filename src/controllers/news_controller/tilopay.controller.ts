@@ -15,7 +15,8 @@ class TiloPayController {
   
   
       try {
-        const response = await this.tiloPayService.tiloPayLogin()
+        const {data}=req.body
+        const response = await this.tiloPayService.tiloPayLogin(data)
 
         if (!response) {
           res.status(404).json({ error: 'Carrier price not found' });
