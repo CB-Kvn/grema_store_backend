@@ -27,7 +27,7 @@ class InventaryService {
               }
             },
             {
-              status: "active"
+              status: "In Stock"
             }
           ]
         },
@@ -62,7 +62,7 @@ class InventaryService {
               }
             },
             {
-              status: "active"
+              status: "In Stock"
             }
           ]
         },
@@ -97,7 +97,7 @@ class InventaryService {
               }
             },
             {
-              status: "active"
+              status: "In Stock"
             }
           ]
         },
@@ -132,7 +132,7 @@ class InventaryService {
               }
             },
             {
-              status: "active"
+              status: "In Stock"
             }
           ]
         },
@@ -167,7 +167,7 @@ class InventaryService {
               }
             },
             {
-              status: "active"
+              status: "In Stock"
             }
           ]
         },
@@ -244,22 +244,22 @@ class InventaryService {
         take: limit,
         include: {
           product: {
-            
-            include:{
-              category:true
+
+            include: {
+              category: true
             }
           },
-         // Incluye los detalles del producto en la respuesta
+          // Incluye los detalles del producto en la respuesta
         },
       });
 
       if (!results) {
         logger.warn(`Not found products`);
-        return { message: "Error:Not found products ", data: {results,totalItems} };
+        return { message: "Error:Not found products ", data: { results, totalItems } };
 
       }
-      logger.warn({ message: "Succesfully get products", data: {results,totalItems}  });
-      return { message: "Succesfully get products", data: {results,totalItems}  };
+      logger.warn({ message: "Succesfully get products", data: { results, totalItems } });
+      return { message: "Succesfully get products", data: { results, totalItems } };
     } catch (error: any) {
       logger.error(`Error fetching data: ${error.message}`);
       throw new Error('Error fetching user data');
@@ -318,7 +318,7 @@ class InventaryService {
           quantity: Number(body.cantidad),
           image: body.imgs,
           price: body.precio,
-          status: "active",
+          status: "In Stock",
           typeDesc: "",
           desc: 0,
         }
@@ -338,6 +338,144 @@ class InventaryService {
       throw new Error('Error fetching products data');
     }
   }
+  public async getTopSellingProducts() {
+
+    try {
+      console.log("AQUI -2")
+      const response = await this.prisma.invoiceDetail.findMany();
+
+      console.log(response)
+      return response
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+  public async searchProducts(searchTerm: string) {
+    return await this.prisma.product.findMany({
+      where: {
+        OR: [
+          { name: { contains: searchTerm, mode: 'insensitive' } }, // Busca por nombre
+          { shape: { contains: searchTerm, mode: 'insensitive' } }, // Busca por forma
+          { category: { name: { contains: searchTerm, mode: 'insensitive' } } }, // Busca por categoría
+        ],
+        product: { some: { quantity: { gt: 0 } } }, // Verifica que haya existencias en el inventario
+      },
+      include: {
+        category: true, // Incluye la categoría
+        product: { where: { quantity: { gt: 0 } } }, // Incluye solo productos con existencias
+      },
+    });
+  }
+  // Servicio para productos nuevos
+  public async getNewProducts() {
+
+    try {
+      const response = await this.prisma.inventory.findMany({
+        where: {
+          quantity: { gt: 0 }, // Solo productos con existencias
+        },
+
+        orderBy: {
+          createAtProductInventory: 'desc',
+          //  createAtProduct: 'desc',
+        },
+        take: 8,
+        include: {
+          product: true
+        }
+      });
+
+      return { message: "Succesfully get products", data: { response } };
+    } catch (error: any) {
+      logger.error(`Error fetching data: ${error.message}`);
+    }
+
+  }
+  // Servicio para productos con descuento
+  public async getDiscountedProducts() {
+
+    try {
+
+      logger.info("Aqui estoy");
+      const response = await this.prisma.inventory.findMany({
+        where: {
+          status: "In Stock"
+        },
+
+      });
+
+      return { message: "Succesfully get products", data: { response } };
+
+    } catch (error: any) {
+      logger.error(`Error fetching data: ${error.message}`);
+    }
+
+
+  }
+  // Servicio para productos relacionados
+  public async getRelatedProducts(productId: string) {
+    logger.info(`Fetching related products for productId: ${productId}`);
+
+    try {
+        // 1. Obtener el producto actual con su categoría
+        const product = await this.prisma.product.findUnique({
+            where: { id: productId },
+            include: { category: true }, // Incluye la categoría para usarla en la búsqueda
+        });
+
+        logger.warn("Producto encontrado:");
+        logger.warn(product);
+
+        if (!product) {
+            throw new Error('Product not found');
+        }
+
+        // 2. Obtener productos relacionados basados en la categoría del producto actual
+        const relatedProducts = await this.prisma.product.findMany({
+            where: {
+                categoryId: product.categoryId, // Busca productos de la misma categoría
+                NOT: { id: productId }, // Excluye el producto actual
+            },
+            take: 15, // Limita a 15 resultados
+        });
+
+        // 3. Verificar el inventario de cada producto relacionado
+        const productsWithInventory = await Promise.all(
+            relatedProducts.map(async (relatedProduct) => {
+                const inventory = await this.prisma.inventory.findMany({
+                    where: {
+                        productId: relatedProduct.id, // Busca el inventario del producto
+                        quantity: { gt: 0 }, // Solo inventario con existencias
+                    },
+                });
+
+                // Si hay inventario disponible, agregamos el producto con su inventario
+                if (inventory.length > 0) {
+                    return {
+                        ...relatedProduct,
+                        inventory, // Agregamos el inventario al producto
+                    };
+                }
+
+                return null; // Si no hay inventario, se devuelve null
+            })
+        );
+
+        // 4. Filtrar productos que tienen inventario disponible
+        const filteredRelatedProducts = productsWithInventory.filter(
+            (product) => product !== null
+        );
+
+        return {
+            message: "Successfully retrieved related products",
+            data: { relatedProducts: filteredRelatedProducts },
+        };
+    } catch (error: any) {
+        logger.error(`Error fetching related products: ${error.message}`);
+        throw new Error(`Failed to fetch related products: ${error.message}`);
+    }
+}
 }
 
 export default InventaryService;

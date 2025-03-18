@@ -27,7 +27,7 @@ class FiltersService {
         this.prisma.category.findMany({
           distinct: ['name'],
           where: {
-            status: "active",
+            status: "Active",
           },
           select: {
             name: true,
